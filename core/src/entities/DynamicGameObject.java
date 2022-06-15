@@ -1,19 +1,26 @@
 package entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class DynamicGameObject extends GameObject {
-    public final Vector2 velocity;
-    public final Vector2 acceleration;
+public abstract class DynamicGameObject extends GameObject implements Movable {
+    private final Vector2 velocity;
 
-    public DynamicGameObject (float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public DynamicGameObject(Texture texture, float x, float y, float width, float height) {
+        super(texture, x, y, width, height);
         velocity = new Vector2();
-        acceleration = new Vector2();
     }
 
-//    acceleration?
+    @Override
     public void move() {
-        position.set(position.x + velocity.x, position.y + velocity.y);
+        getPosition().add(velocity.x, velocity.y);
+    }
+
+    public void changeVelocity(float x, float y) {
+        velocity.add(x, y);
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }

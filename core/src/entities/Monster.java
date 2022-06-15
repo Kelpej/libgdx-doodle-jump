@@ -1,10 +1,6 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.util.Random;
 
 public class Monster {
     private final Texture texture;
