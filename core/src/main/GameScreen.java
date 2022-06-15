@@ -8,18 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import entities.Monster;
+import entities.MonsterFactory;
 
 public class GameScreen implements Screen {
+
+    public final int WORLD_WIDTH = 400;
+    public final int WORLD_HEIGHT = 800;
+
     private Camera camera;
     private Viewport viewport;
+
 
     private SpriteBatch batch;
     private Texture background;
 
-    private final int WORLD_WIDTH = 400;
-    private final int WORLD_HEIGHT = 800;
+    private final MonsterFactory monsterFactory;
 
     public GameScreen() {
+        monsterFactory = new MonsterFactoryImpl();
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         background = new Texture("environment/bg.png");
@@ -30,7 +36,6 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         batch.begin();
         batch.draw(background, 0, 0);
-        var monster = new Monster(0, 0);
         batch.end();
     }
 
