@@ -1,6 +1,10 @@
 package entities;
 
-public interface Movable {
+import com.badlogic.gdx.math.Vector2;
 
-    void move();
+public interface Movable extends GameObject {
+
+    void move(float deltaTime);
+
+    Vector2 getVelocity();
 }

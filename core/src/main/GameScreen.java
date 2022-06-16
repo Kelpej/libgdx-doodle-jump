@@ -5,37 +5,38 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import entities.Monster;
-import entities.MonsterFactory;
 
 public class GameScreen implements Screen {
 
-    public final int WORLD_WIDTH = 400;
-    public final int WORLD_HEIGHT = 800;
+    public static final float WORLD_WIDTH = 400;
+    public static final float WORLD_HEIGHT = 800;
 
-    private Camera camera;
-    private Viewport viewport;
+    private final Camera camera = new OrthographicCamera();;
+    private Viewport viewport  = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
 
-    private SpriteBatch batch;
-    private Texture background;
+    private SpriteBatch batch = new SpriteBatch();;
+    private Texture background = new Texture("environment/bg.png");
 
-    private final MonsterFactory monsterFactory;
-
-    public GameScreen() {
-        monsterFactory = new MonsterFactoryImpl();
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        background = new Texture("environment/bg.png");
-        batch = new SpriteBatch();
-    }
+    private World world = new World(new WordListenerImpl());
 
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
         batch.draw(background, 0, 0);
+
+        world.getMovables().forEach(movable -> movable.move(delta));
+
+        world.getMovables().forEach(movable -> movable.draw(batch));
+        world.getObstacles().forEach(obstacle -> obstacle.draw(batch));
+
         batch.end();
     }
 

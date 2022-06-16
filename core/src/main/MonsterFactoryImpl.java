@@ -1,8 +1,9 @@
 package main;
 
-import entities.Monster;
-import entities.MonsterFactory;
+import entities.monster.Monster;
+import entities.monster.MonsterFactory;
 import com.badlogic.gdx.graphics.Texture;
+import entities.platform.Platform;
 
 import java.util.*;
 
@@ -20,8 +21,10 @@ public class MonsterFactoryImpl implements MonsterFactory {
     }
 
     @Override
-    public Monster create(float x, float y) {
+    public Monster create(Platform platform) {
         Texture texture = textures.get(random.nextInt(0, textures.size()));
-        return new Monster(texture, x, y);
+
+        return new Monster(texture,  platform.getPosition().x,
+                platform.getPosition().y + Monster.HEIGHT);
     }
 }
