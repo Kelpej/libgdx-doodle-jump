@@ -4,7 +4,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,6 +22,7 @@ public class GameScreen implements Screen {
 
     private SpriteBatch batch = new SpriteBatch();;
     private Texture background = new Texture("environment/bg.png");
+    private Texture testTexture = new Texture("environment/kavunyaka.png");
 
     private World world = new World(new WordListenerImpl());
 
@@ -31,6 +34,9 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(background, 0, 0);
+
+
+        batch.draw(testTexture, 0, 0, 700, 700);
 
         world.getMovables().forEach(movable -> movable.move(delta));
 

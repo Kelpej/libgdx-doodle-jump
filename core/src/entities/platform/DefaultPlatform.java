@@ -2,6 +2,7 @@ package entities.platform;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import entities.Doodler;
 import entities.StaticGameObject;
 
 public class DefaultPlatform extends StaticGameObject implements Platform {

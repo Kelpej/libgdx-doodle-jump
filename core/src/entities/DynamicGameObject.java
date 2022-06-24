@@ -1,7 +1,10 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import entities.platform.Platform;
+import main.GameScreen;
 
 public abstract class DynamicGameObject extends GameObject implements Movable {
 
@@ -50,8 +53,9 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
         return velocity;
     }
 
-    protected void setVelocity(float x, float y) {
-        velocity.set(x, y);
+    @Override
+    public void draw(SpriteBatch batch) {
+        super.draw(batch);
     }
 
     public float getStateTime() {

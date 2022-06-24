@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
 import entities.DynamicGameObject;
+import entities.platform.Platform;
 
 public class Monster extends DynamicGameObject implements Collider {
 
