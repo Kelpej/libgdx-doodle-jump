@@ -9,25 +9,23 @@ import entities.powerup.Propeller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class PowerUpFactoryImpl implements PowerUpFactory {
-    private final List<Supplier<PowerUp>> powerUps = new ArrayList<>();
+
+    private final List<BiFunction<Float, Float, PowerUp>> powerUps = new ArrayList<>();
+
     private final Random random = new Random();
 
     public PowerUpFactoryImpl() {
-        powerUps.add(() -> new Propeller(0, 0));
-
+        powerUps.add(Propeller::new);
     }
 
     @Override
     public PowerUp create(Platform platform) {
         int index = random.nextInt(0, powerUps.size());
 
-        PowerUp powerUp = powerUps.get(index).get();
-        powerUp.setPosition(platform.getPosition().x,
-                platform.getPosition().y + Platform.PLATFORM_HEIGHT / 2 + powerUp.getBounds().height / 2);
-
-        return powerUp;
+        return powerUps.get(index).apply(platform.getPosition().x, platform.getPosition().y);
     }
 }

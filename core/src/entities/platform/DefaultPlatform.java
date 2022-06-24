@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import entities.StaticGameObject;
 
 public class DefaultPlatform extends StaticGameObject implements Platform {
+
     private static final Texture TEXTURE = new Texture(Gdx.files.internal("environment/platform/default.png"));
 
     public DefaultPlatform(float x, float y) {
@@ -12,7 +13,7 @@ public class DefaultPlatform extends StaticGameObject implements Platform {
     }
 
     @Override
-    public void update(float deltaTime) {
-
+    public void collideDoodle(Doodler doodler) {
+        bounce(doodler);
     }
 }

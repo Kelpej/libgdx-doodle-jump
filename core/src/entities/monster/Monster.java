@@ -1,21 +1,23 @@
 package entities.monster;
 
 import com.badlogic.gdx.graphics.Texture;
-import entities.Obstacle;
+import com.badlogic.gdx.math.Vector2;
+import entities.Collider;
 import entities.Doodler;
 import entities.DynamicGameObject;
 
-public class Monster extends DynamicGameObject implements Obstacle {
-    public static final float WIDTH = 120;
-    public static final float HEIGHT = 100;
+public class Monster extends DynamicGameObject implements Collider {
 
-    public Monster(Texture texture, float x, float y) {
-        super(texture, x, y, WIDTH, HEIGHT);
+    public static final float WIDTH = 90;
+    public static final float HEIGHT = 90;
+
+    public Monster(Texture texture, Platform platform) {
+        super(texture, WIDTH, HEIGHT, platform, new Vector2(5, 0));
     }
 
     @Override
     public void update(float deltaTime) {
-
+        super.move(deltaTime);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package main;
 
 import com.badlogic.gdx.math.Vector2;
-import entities.Obstacle;
+import entities.Collider;
 import entities.Doodler;
 import entities.Movable;
 import entities.monster.MonsterFactory;
@@ -37,7 +37,7 @@ public class World {
     private final PowerUpFactory powerUpFactory;
 
     public final List<Movable> movables = new ArrayList<>(INITIAL_CAPACITY);
-    public final List<Obstacle> obstacles = new ArrayList<>(INITIAL_CAPACITY);
+    public final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
 
     private float heightSoFar = 0;
     private int score = 0;
@@ -65,11 +65,15 @@ public class World {
             Platform platform = platformFactory.create(x, y);
             addPlatform(platform);
 
-//            if (random.nextFloat() > 0.9f && !(platform instanceof MovingPlatform)) {
-//                PowerUp powerUp = powerUpFactory.create(platform);
-//                addCollider(powerUp);
-//            }
-//
+            if (!(platform instanceof MovingPlatform)) {
+                if (random.nextFloat() > 0.9f) {
+                    PowerUp powerUp = powerUpFactory.create(platform);
+                    addCollider(powerUp);
+                }
+            } else {
+                addMoving((Movable) platform);
+            }
+
             if (y > WORLD_HEIGHT / 3 && random.nextFloat() > 0.8f) {
                 var monster = monsterFactory.create(platform);
                 addCollider(monster);
@@ -99,7 +103,7 @@ public class World {
         }
     }
 
-    private void addCollider(Obstacle obstacle) {
+    private void addCollider(Collider obstacle) {
         obstacles.add(obstacle);
     }
 
@@ -111,7 +115,7 @@ public class World {
         return Collections.unmodifiableList(movables);
     }
 
-    public List<Obstacle> getObstacles() {
+    public List<Collider> getObstacles() {
         return Collections.unmodifiableList(obstacles);
     }
 }

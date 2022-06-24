@@ -24,7 +24,6 @@ public class MonsterFactoryImpl implements MonsterFactory {
     public Monster create(Platform platform) {
         Texture texture = textures.get(random.nextInt(0, textures.size()));
 
-        return new Monster(texture,  platform.getPosition().x,
-                platform.getPosition().y + Monster.HEIGHT);
+        return new Monster(texture, platform);
     }
 }

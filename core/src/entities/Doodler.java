@@ -2,6 +2,7 @@ package entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import entities.monster.Monster;
 import entities.platform.Platform;
 import entities.powerup.PowerUp;
@@ -22,8 +23,7 @@ public class Doodler extends DynamicGameObject {
 
 
     public Doodler(Texture texture, float x, float y) {
-        super(texture, x, y);
-        setVelocity(X_VELOCITY, Y_VELOCITY);
+        super(texture, x, y, new Vector2(X_VELOCITY, Y_VELOCITY));
     }
 
     enum State {
@@ -35,7 +35,7 @@ public class Doodler extends DynamicGameObject {
     private State currentState = JUMP;
 
     public Doodler(float x, float y) {
-        super(TEXTURE, x, y);
+        super(TEXTURE, x, y, new Vector2(X_VELOCITY, Y_VELOCITY));
         currentState = FALL;
         resetTime();
     }

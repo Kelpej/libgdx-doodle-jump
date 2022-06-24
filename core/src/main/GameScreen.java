@@ -34,7 +34,11 @@ public class GameScreen implements Screen {
 
         world.getMovables().forEach(movable -> movable.move(delta));
 
-        world.getMovables().forEach(movable -> movable.draw(batch));
+        world.getMovables().forEach(movable -> {
+            movable.move(delta);
+            movable.draw(batch);
+        });
+
         world.getObstacles().forEach(obstacle -> obstacle.draw(batch));
 
         batch.end();
