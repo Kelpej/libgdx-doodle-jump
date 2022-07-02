@@ -1,9 +1,10 @@
 package main;
 
-public interface WorldListener {
-    void doodlerJump();
+import com.badlogic.gdx.InputProcessor;
 
-    void doodlerSpring();
+import javax.swing.plaf.basic.BasicListUI;
+import javax.swing.plaf.basic.BasicListUI.MouseInputHandler;
 
-    void doodlerHitMonster();
+public abstract class WorldListener {
+
 }

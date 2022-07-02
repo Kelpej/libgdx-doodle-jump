@@ -13,7 +13,7 @@ import static main.GameScreen.WORLD_WIDTH;
 
 public class Doodler extends DynamicGameObject {
 
-    public static final float X_VELOCITY = 5;
+    public static final float X_VELOCITY = 20;
     public static final float Y_VELOCITY = 40;
 
     private static final Texture TEXTURE = new Texture(Gdx.files.internal("player/right.png"));
@@ -22,8 +22,8 @@ public class Doodler extends DynamicGameObject {
     private boolean orientedRight = true;
 
 
-    public Doodler(Texture texture, float x, float y) {
-        super(texture, x, y, new Vector2(X_VELOCITY, Y_VELOCITY));
+    public static Doodler createDoodler(Platform platform) {
+        return new Doodler(TEXTURE, 50, 50, platform, new Vector2(0, Y_VELOCITY));
     }
 
     enum State {
@@ -34,14 +34,13 @@ public class Doodler extends DynamicGameObject {
 
     private State currentState = JUMP;
 
-    public Doodler(float x, float y) {
-        super(TEXTURE, x, y, new Vector2(X_VELOCITY, Y_VELOCITY));
-        currentState = FALL;
-        resetTime();
+    private Doodler(Texture texture, float width, float height, Platform platform, Vector2 velocity) {
+        super(texture, width, height, platform, velocity);
     }
 
     @Override
     public void update(float deltaTime) {
+        deltaTime *= 10;
 
         getVelocity().add(World.gravity.x * deltaTime, World.gravity.y * deltaTime);
 
@@ -50,20 +49,14 @@ public class Doodler extends DynamicGameObject {
         getBounds().x = getPosition().x - getBounds().width / 2;
         getBounds().y = getPosition().y - getBounds().height / 2;
 
-        if (getVelocity().y > 0 && currentState != HIT) {
-
-            if (currentState != JUMP) {
-                currentState = JUMP;
-                resetTime();
-            }
+        if (getVelocity().y > 0 && currentState != HIT && currentState != JUMP) {
+            currentState = JUMP;
+            resetTime();
         }
 
-        if (getVelocity().y < 0 && currentState != HIT) {
-
-            if (currentState != FALL) {
-                currentState = FALL;
-                resetTime();
-            }
+        if (getVelocity().y < 0 && currentState != HIT && currentState != FALL) {
+            currentState = FALL;
+            resetTime();
         }
 
         if (getPosition().x < 0) {
@@ -107,5 +100,9 @@ public class Doodler extends DynamicGameObject {
 
     public void setDead() {
         this.isAlive = false;
+    }
+
+    public void setXVelocity(float x) {
+        getVelocity().x = x;
     }
 }

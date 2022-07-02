@@ -18,8 +18,6 @@ public abstract class StaticGameObject extends GameObject implements Collider {
         super(texture, x, y);
     }
 
-    public abstract void collideDoodle(Doodler doodler);
-
     @Override
     public void draw(SpriteBatch batch) {
         super.draw(batch);

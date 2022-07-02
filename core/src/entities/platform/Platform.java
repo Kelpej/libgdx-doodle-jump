@@ -13,6 +13,11 @@ public interface Platform extends Collider {
     float PLATFORM_WIDTH = 60;
     float PLATFORM_HEIGHT = 20;
 
+    @Override
+    default boolean collidesDoodler(Doodler doodler) {
+        return Collider.super.collidesDoodler(doodler) && doodler.getPosition().y > this.getPosition().y;
+    }
+
     default void collideDoodle(Doodler doodler) {
         doodler.collidePlatform(this);
     }

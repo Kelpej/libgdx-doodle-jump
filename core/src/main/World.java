@@ -26,15 +26,16 @@ public class World {
     public static final int WORLD_STATE_NEXT_LEVEL = 1;
     public static final int WORLD_STATE_GAME_OVER = 2;
 
-    public static final Vector2 gravity = new Vector2(0, -12);
+    public static final Vector2 gravity = new Vector2(0, -6);
 
-    public final WorldListener listener;
+//    public final WorldListener listener;
     public final Random random = new Random();
-    public final Doodler doodler = new Doodler(0, 0);
 
     private final PlatformFactory platformFactory;
     private final MonsterFactory monsterFactory;
     private final PowerUpFactory powerUpFactory;
+
+    public Doodler doodler;
 
     public final List<Movable> movables = new ArrayList<>(INITIAL_CAPACITY);
     public final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
@@ -43,9 +44,7 @@ public class World {
     private int score = 0;
     private int state = WORLD_STATE_RUNNING;
 
-    public World(WorldListener listener) {
-        this.listener = listener;
-
+    public World() {
         platformFactory = new PlatformFactoryImpl();
         monsterFactory = new MonsterFactoryImpl();
         powerUpFactory = new PowerUpFactoryImpl();
@@ -57,6 +56,7 @@ public class World {
         float y = Platform.PLATFORM_HEIGHT / 2;
 
         float maxJumpHeight = (float) StrictMath.pow(Doodler.Y_VELOCITY, 2) / - (2 * gravity.y);
+        boolean spawnDoodle = true;
 
         while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
 
@@ -64,6 +64,11 @@ public class World {
 
             Platform platform = platformFactory.create(x, y);
             addPlatform(platform);
+
+            if (spawnDoodle) {
+                this.doodler = Doodler.createDoodler(platform);
+                spawnDoodle = false;
+            }
 
             if (!(platform instanceof MovingPlatform)) {
                 if (random.nextFloat() > 0.9f) {
@@ -85,7 +90,6 @@ public class World {
             y -= random.nextFloat() * maxJumpHeight / 3;
             System.out.println(y);
         }
-
     }
 
 
