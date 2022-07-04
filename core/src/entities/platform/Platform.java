@@ -25,6 +25,7 @@ public interface Platform extends Collider {
     }
 
     default void bounce(Doodler doodler) {
+        doodler.jump();
         doodler.getVelocity().y = Y_VELOCITY;
     }
 

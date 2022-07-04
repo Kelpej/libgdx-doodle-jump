@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
 
         if (world.doodler.getPosition().y > camera.position.y) {
             camera.position.y = world.doodler.getPosition().y;
-            world.clearScene();
+            world.refreshScene();
         }
 
         batch.begin();

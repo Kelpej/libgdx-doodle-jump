@@ -2,6 +2,7 @@ package entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.monster.Monster;
 import entities.platform.Platform;
@@ -16,17 +17,31 @@ public class Doodler extends DynamicGameObject {
     public static final float X_VELOCITY = 20;
     public static final float Y_VELOCITY = 45;
 
-    private static final Texture TEXTURE = new Texture(Gdx.files.internal("player/right.png"));
+    private static final Texture JUMP_TEXTURE = new Texture(Gdx.files.internal("player/right.png"));
+    private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
+
+    enum State {
+        JUMP,
+        FALL,
+        POWERED_UP,
+    }
+
+    private State currentState = FALL;
+    private Texture currentTexture = FALL_TEXTURE;
 
     private boolean isAlive = true;
-    private State currentState = FALL;
 
     private Doodler(Texture texture, float width, float height, Platform platform, Vector2 velocity) {
         super(texture, width, height, platform, velocity);
     }
 
     public static Doodler createDoodler(Platform platform) {
-        return new Doodler(TEXTURE, 50, 50, platform, new Vector2(0, Y_VELOCITY));
+        return new Doodler(JUMP_TEXTURE, 50, 50, platform, new Vector2(0, Y_VELOCITY));
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        batch.draw(currentTexture, getPosition().x, getPosition().y, getBounds().width, getBounds().height);
     }
 
     @Override
@@ -40,13 +55,13 @@ public class Doodler extends DynamicGameObject {
         getBounds().x = getPosition().x - getBounds().width / 2;
         getBounds().y = getPosition().y - getBounds().height / 2;
 
-        if (getVelocity().y > 0 && currentState != HIT && currentState != JUMP) {
-            currentState = JUMP;
+        if (getVelocity().y > 0) {
+            jump();
             resetTime();
         }
 
-        if (getVelocity().y < 0 && currentState != HIT && currentState != FALL) {
-            currentState = FALL;
+        if (getVelocity().y < 0) {
+            fall();
             resetTime();
         }
 
@@ -62,11 +77,10 @@ public class Doodler extends DynamicGameObject {
     }
 
     public void collideMonster(Monster monster) {
-
         //if doodler hits monster from above
         if (monster.getPosition().y > this.getPosition().y) {
             getVelocity().set(0, 0);
-            currentState = JUMP;
+            jump();
             resetTime();
             return;
         }
@@ -76,12 +90,12 @@ public class Doodler extends DynamicGameObject {
 
     public void collidePlatform(Platform platform) {
         platform.bounce(this);
-        currentState = JUMP;
         resetTime();
     }
 
     public void collidePowerUp(PowerUp powerUp) {
         powerUp.apply(this);
+        powerUp();
     }
 
     public boolean isAlive() {
@@ -96,33 +110,29 @@ public class Doodler extends DynamicGameObject {
         getVelocity().x = x;
     }
 
+    public void jump() {
+        currentState = JUMP;
+        currentTexture = JUMP_TEXTURE;
+    }
+
     public boolean isJumping() {
         return currentState == JUMP;
     }
 
-    public void jump() {
-        currentState = JUMP;
+    public void fall() {
+        currentState = State.FALL;
+        currentTexture = FALL_TEXTURE;
     }
 
     public boolean isFalling() {
-        return currentState == FALL;
+        return currentState == State.FALL;
     }
 
-    public void fall() {
-        currentState = FALL;
+    public boolean isPoweredUp() {
+        return currentState == POWERED_UP;
     }
 
-    public boolean isHit() {
-        return currentState == HIT;
-    }
-
-    public void hit() {
-        currentState = HIT;
-    }
-
-    enum State {
-        JUMP,
-        FALL,
-        HIT,
+    public void powerUp() {
+        currentState = POWERED_UP;
     }
 }

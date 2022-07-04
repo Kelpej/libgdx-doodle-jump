@@ -58,10 +58,12 @@ public class World {
 
         doodler.update(delta);
 
-        obstacles.stream()
-                .filter(collider -> collider.collidesDoodler(doodler))
-                .findFirst()
-                .ifPresent(collider -> collider.collideDoodle(doodler));
+        if (!doodler.isPoweredUp()) {
+            obstacles.stream()
+                    .filter(collider -> collider.collidesDoodler(doodler))
+                    .findFirst()
+                    .ifPresent(collider -> collider.collideDoodle(doodler));
+        }
 
         movables.forEach(movable -> movable.move(delta));
     }
@@ -73,21 +75,16 @@ public class World {
         boolean spawnDoodle = true;
 
         while (y < WORLD_HEIGHT) {
+            float x = getRandomX();
 
-            float x = random.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
-
-            Platform platform = platformFactory.create(x, y);
-            addPlatform(platform);
+            Platform platform = createPlatform(x, y);
 
             if (spawnDoodle) {
                 this.doodler = Doodler.createDoodler(platform);
                 spawnDoodle = false;
             }
 
-            if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
-                PowerUp powerUp = powerUpFactory.create(platform);
-                addCollider(powerUp);
-            }
+            createPowerUp(platform);
 
 //            if (y > WORLD_HEIGHT / 3 && random.nextFloat() > 0.8f) {
 //                var monster = monsterFactory.create(platform);
@@ -100,16 +97,25 @@ public class World {
         }
     }
 
-    void createPlatform(float y) {
-        float x = getRandomX();
-
-        Platform platform = platformFactory.create(x, y);
-        addPlatform(platform);
-
+    private void createPowerUp(Platform platform) {
         if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
             PowerUp powerUp = powerUpFactory.create(platform);
             addCollider(powerUp);
         }
+    }
+
+    private Platform createPlatform(float x, float y) {
+        Platform platform = platformFactory.create(x, y);
+        addPlatform(platform);
+        return platform;
+    }
+
+    void createPlatform(float y) {
+        float x = getRandomX();
+
+        Platform platform = createPlatform(x, y);
+
+        createPowerUp(platform);
 
 //        if (random.nextFloat() > 0.8f) {
 //            var monster = monsterFactory.create(platform);
@@ -119,21 +125,18 @@ public class World {
 
     }
 
-    public void clearScene() {
-
-        for (int i = 0; i < obstacles.size(); i++)
+    public void refreshScene() {
+        for (int i = 0; i < obstacles.size(); i++) {
             if (obstacles.get(i).getPosition().y < doodler.getPosition().y - WORLD_HEIGHT / 2) {
                 Collider o = obstacles.get(i);
+
                 obstacles.remove(o);
+                movables.remove(o);
 
                 if (o instanceof Platform)
                     createPlatform(o.getPosition().y + WORLD_HEIGHT);
             }
-
-        for (int i = 0; i < movables.size(); i++)
-            if (movables.get(i).getPosition().y < doodler.getPosition().y - WORLD_HEIGHT / 2) {
-                movables.remove(movables.get(i));
-            }
+        }
     }
 
     private float getRandomX() {
