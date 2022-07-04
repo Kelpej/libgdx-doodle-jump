@@ -44,7 +44,6 @@ public class GameScreen implements Screen {
 
         world.getObstacles().forEach(obstacle -> obstacle.draw(batch));
 
-
         batch.end();
     }
 
