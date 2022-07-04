@@ -7,11 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import entities.platform.Platform;
 
 public abstract class GameObject {
-
     private final Texture texture;
     private final Vector2 position;
     private final Rectangle bounds;
-
 
     protected GameObject(Texture texture, float x, float y, float width, float height) {
         this.texture = texture;
@@ -40,7 +38,11 @@ public abstract class GameObject {
         this.bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
     }
 
-    public void draw(SpriteBatch batch) {
+    public void update(SpriteBatch batch, float delta) {
+        draw(batch);
+    }
+
+    protected void draw(SpriteBatch batch) {
         batch.draw(getTexture(), getPosition().x, getPosition().y, getBounds().width, getBounds().height);
     }
 

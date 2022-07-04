@@ -2,6 +2,7 @@ package entities.platform;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Doodler;
 import entities.GameObject;
 
@@ -16,5 +17,10 @@ public class DefaultPlatform extends GameObject implements Platform {
     @Override
     public void collideDoodle(Doodler doodler) {
         bounce(doodler);
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        Platform.super.draw(batch);
     }
 }

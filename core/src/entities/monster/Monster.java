@@ -17,11 +17,6 @@ public class Monster extends DynamicGameObject implements Collider {
     }
 
     @Override
-    public void update(float deltaTime) {
-        super.move(deltaTime);
-    }
-
-    @Override
     public void collideDoodle(Doodler doodler) {
         doodler.collideMonster(this);
     }

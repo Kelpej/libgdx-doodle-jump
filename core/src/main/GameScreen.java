@@ -15,18 +15,16 @@ public class GameScreen implements Screen {
     public static final float WORLD_HEIGHT = 800;
 
     private final Camera camera = new OrthographicCamera();
+    private final Viewport viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+    private final SpriteBatch batch = new SpriteBatch();
     private final Texture background = new Texture("environment/bg.png");
-    private Viewport viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-    private SpriteBatch batch = new SpriteBatch();
-    private World world = new World();
+    private final World world = new World();
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-        world.update(delta);
 
         if (world.doodler.getPosition().y > camera.position.y) {
             camera.position.y = world.doodler.getPosition().y;
@@ -40,9 +38,7 @@ public class GameScreen implements Screen {
                 camera.position.y - WORLD_HEIGHT / 2,
                 WORLD_WIDTH, WORLD_HEIGHT);
 
-        world.doodler.draw(batch);
-
-        world.getObstacles().forEach(obstacle -> obstacle.draw(batch));
+        world.update(batch, delta);
 
         batch.end();
     }

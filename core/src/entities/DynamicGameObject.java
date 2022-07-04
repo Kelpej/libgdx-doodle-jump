@@ -49,16 +49,15 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
         stateTime += deltaTime;
     }
 
-    public abstract void update(float deltaTime);
+    @Override
+    public void update(SpriteBatch batch, float deltaTime) {
+        move(deltaTime);
+        draw(batch);
+    }
 
     @Override
     public Vector2 getVelocity() {
         return velocity;
-    }
-
-    @Override
-    public void draw(SpriteBatch batch) {
-        super.draw(batch);
     }
 
     public float getStateTime() {

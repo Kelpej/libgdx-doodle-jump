@@ -45,7 +45,7 @@ public class Doodler extends DynamicGameObject {
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void update(SpriteBatch batch, float deltaTime) {
         deltaTime *= 10;
 
         getVelocity().add(World.GRAVITY.x * deltaTime, World.GRAVITY.y * deltaTime);
@@ -74,12 +74,13 @@ public class Doodler extends DynamicGameObject {
         }
 
         addTime(deltaTime);
+        draw(batch);
     }
 
     public void collideMonster(Monster monster) {
         //if doodler hits monster from above
         if (monster.getPosition().y > this.getPosition().y) {
-            getVelocity().set(0, 0);
+            getVelocity().set(0, Y_VELOCITY);
             jump();
             resetTime();
             return;

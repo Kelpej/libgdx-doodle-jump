@@ -2,6 +2,7 @@ package entities.platform;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.DynamicGameObject;
 
@@ -21,7 +22,7 @@ public class MovingPlatform extends DynamicGameObject implements Platform {
     }
 
     @Override
-    public void update(float deltaTime) {
-
+    public void draw(SpriteBatch batch) {
+        super.draw(batch);
     }
 }

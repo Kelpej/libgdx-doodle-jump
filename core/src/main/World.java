@@ -2,6 +2,7 @@ package main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
@@ -23,31 +24,32 @@ import static main.GameScreen.WORLD_WIDTH;
 
 public class World {
     public static final Vector2 GRAVITY = new Vector2(0, -6);
+    private static final int INITIAL_CAPACITY = 32;
+
     public static final int WORLD_STATE_RUNNING = 0;
     public static final int WORLD_STATE_NEXT_LEVEL = 1;
     public static final int WORLD_STATE_GAME_OVER = 2;
-    private static final int INITIAL_CAPACITY = 64;
     private static final double MAX_JUMP_HEIGHT = StrictMath.pow(Doodler.Y_VELOCITY, 2) / -(2 * GRAVITY.y);
+
     public final Random random = new Random();
-    public final List<Movable> movables = new ArrayList<>(INITIAL_CAPACITY);
+
     public final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
-    private final PlatformFactory platformFactory;
-    private final MonsterFactory monsterFactory;
-    private final PowerUpFactory powerUpFactory;
+
+    private final PlatformFactory platformFactory = new PlatformFactoryImpl();
+    private final MonsterFactory monsterFactory = new MonsterFactoryImpl();
+    private final PowerUpFactory powerUpFactory = new PowerUpFactoryImpl();
+
     public Doodler doodler;
+
     private float heightSoFar = 0;
     private int score = 0;
     private int state = WORLD_STATE_RUNNING;
 
     public World() {
-        platformFactory = new PlatformFactoryImpl();
-        monsterFactory = new MonsterFactoryImpl();
-        powerUpFactory = new PowerUpFactoryImpl();
-
-        generateLevel();
+        generateScene();
     }
 
-    public void update(float delta) {
+    public void update(SpriteBatch batch, float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             doodler.setXVelocity(-Doodler.X_VELOCITY);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -56,19 +58,19 @@ public class World {
             doodler.setXVelocity(0);
         }
 
-        doodler.update(delta);
+        doodler.update(batch, delta);
 
-        if (!doodler.isPoweredUp()) {
+        if (doodler.isAlive() && !doodler.isPoweredUp()) {
             obstacles.stream()
                     .filter(collider -> collider.collidesDoodler(doodler))
                     .findFirst()
                     .ifPresent(collider -> collider.collideDoodle(doodler));
         }
 
-        movables.forEach(movable -> movable.move(delta));
+        getObstacles().forEach(collider -> collider.update(batch, delta));
     }
 
-    private void generateLevel() {
+    private void generateScene() {
         float y = Platform.PLATFORM_HEIGHT / 2;
 
         float maxJumpHeight = (float) MAX_JUMP_HEIGHT;
@@ -106,7 +108,7 @@ public class World {
 
     private Platform createPlatform(float x, float y) {
         Platform platform = platformFactory.create(x, y);
-        addPlatform(platform);
+        addCollider(platform);
         return platform;
     }
 
@@ -131,7 +133,6 @@ public class World {
                 Collider o = obstacles.get(i);
 
                 obstacles.remove(o);
-                movables.remove(o);
 
                 if (o instanceof Platform)
                     createPlatform(o.getPosition().y + WORLD_HEIGHT);
@@ -150,24 +151,8 @@ public class World {
         }
     }
 
-    private void addPlatform(Platform platform) {
-        addCollider(platform);
-
-        if (platform instanceof MovingPlatform) {
-            addMoving((Movable) platform);
-        }
-    }
-
     private void addCollider(Collider obstacle) {
         obstacles.add(obstacle);
-    }
-
-    private void addMoving(Movable movable) {
-        movables.add(movable);
-    }
-
-    public List<Movable> getMovables() {
-        return Collections.unmodifiableList(movables);
     }
 
     public List<Collider> getObstacles() {
