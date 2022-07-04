@@ -80,9 +80,9 @@ public class World {
 
             createPowerUp(platform);
 
-            if (y > WORLD_HEIGHT / 3 ) {
-                createMonster(platform);
-            }
+//            if (y > WORLD_HEIGHT / 3 ) {
+//                createMonster(platform);
+//            }
 
             y += (maxJumpHeight - 0.8f);
             y -= random.nextFloat() * maxJumpHeight / 3;
@@ -91,32 +91,32 @@ public class World {
 
     private Platform createPlatform(float x, float y) {
         Platform platform = platformFactory.create(x, y);
-        addCollider(platform);
+        addObstacle(platform);
         return platform;
     }
 
-    private void createMonster(Platform platform) {
-        if (random.nextFloat() > 0.8f) {
-            var monster = monsterFactory.create(platform);
-            addCollider(monster);
-        }
-    }
-
-    private void createPowerUp(Platform platform) {
-        if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
-            PowerUp powerUp = powerUpFactory.create(platform);
-            addCollider(powerUp);
-        }
-    }
-
-    void createPlatform(float y) {
+    private void createPlatform(float y) {
         float x = getRandomX();
 
         Platform platform = createPlatform(x, y);
 
         createPowerUp(platform);
 
-        createMonster(platform);
+//        createMonster(platform);
+    }
+
+    private void createMonster(Platform platform) {
+        if (random.nextFloat() > 0.8f) {
+            var monster = monsterFactory.create(platform);
+            addObstacle(monster);
+        }
+    }
+
+    private void createPowerUp(Platform platform) {
+        if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
+            PowerUp powerUp = powerUpFactory.create(platform);
+            addObstacle(powerUp);
+        }
     }
 
     public void refreshScene() {
@@ -136,7 +136,7 @@ public class World {
         return random.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
     }
 
-    private void addCollider(Collider obstacle) {
+    private void addObstacle(Collider obstacle) {
         obstacles.add(obstacle);
     }
 

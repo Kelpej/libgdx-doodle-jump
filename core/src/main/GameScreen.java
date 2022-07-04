@@ -23,13 +23,14 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         if (world.doodler.getPosition().y > camera.position.y) {
             camera.position.y = world.doodler.getPosition().y;
             world.refreshScene();
         }
+
+        camera.update();
 
         batch.begin();
 
