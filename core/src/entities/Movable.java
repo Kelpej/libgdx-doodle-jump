@@ -9,5 +9,7 @@ public interface Movable {
 
     Vector2 getVelocity();
 
+    Vector2 getPosition();
+
     void draw(SpriteBatch batch);
 }

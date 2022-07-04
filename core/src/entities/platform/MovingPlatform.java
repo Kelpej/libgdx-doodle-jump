@@ -3,7 +3,6 @@ package entities.platform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import entities.Doodler;
 import entities.DynamicGameObject;
 
 public class MovingPlatform extends DynamicGameObject implements Platform {

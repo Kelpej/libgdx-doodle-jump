@@ -25,6 +25,6 @@ public class PlatformFactoryImpl implements PlatformFactory {
     public Platform create(float x, float y) {
         int index = random.nextInt(0, platforms.size());
 
-        return platforms.get(index).apply(x ,y);
+        return platforms.get(index).apply(x, y);
     }
 }

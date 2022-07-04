@@ -3,9 +3,9 @@ package entities.platform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import entities.Doodler;
-import entities.StaticGameObject;
+import entities.GameObject;
 
-public class DefaultPlatform extends StaticGameObject implements Platform {
+public class DefaultPlatform extends GameObject implements Platform {
 
     private static final Texture TEXTURE = new Texture(Gdx.files.internal("environment/platform/default.png"));
 

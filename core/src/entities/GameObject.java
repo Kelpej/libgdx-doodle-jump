@@ -35,12 +35,12 @@ public abstract class GameObject {
         float x = platform.getPosition().x + (Platform.PLATFORM_WIDTH - width) / 2;
         float y = platform.getPosition().y + Platform.PLATFORM_HEIGHT;
 
-        this.position = new Vector2(x,y);
+        this.position = new Vector2(x, y);
 
         this.bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         batch.draw(getTexture(), getPosition().x, getPosition().y, getBounds().width, getBounds().height);
     }
 

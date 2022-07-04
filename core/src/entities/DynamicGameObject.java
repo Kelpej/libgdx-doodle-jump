@@ -2,7 +2,6 @@ package entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import entities.platform.Platform;
 import main.GameScreen;
@@ -30,7 +29,6 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
     @Override
     public void move(float deltaTime) {
         getPosition().add(velocity.x, velocity.y);
-
 
         if (getPosition().x < getBounds().width / 2) {
 

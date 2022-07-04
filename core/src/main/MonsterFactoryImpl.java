@@ -1,11 +1,13 @@
 package main;
 
+import com.badlogic.gdx.graphics.Texture;
 import entities.monster.Monster;
 import entities.monster.MonsterFactory;
-import com.badlogic.gdx.graphics.Texture;
 import entities.platform.Platform;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MonsterFactoryImpl implements MonsterFactory {
 
@@ -23,7 +25,6 @@ public class MonsterFactoryImpl implements MonsterFactory {
     @Override
     public Monster create(Platform platform) {
         Texture texture = textures.get(random.nextInt(0, textures.size()));
-
         return new Monster(texture, platform);
     }
 }

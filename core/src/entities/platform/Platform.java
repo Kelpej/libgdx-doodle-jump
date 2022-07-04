@@ -15,7 +15,9 @@ public interface Platform extends Collider {
 
     @Override
     default boolean collidesDoodler(Doodler doodler) {
-        return Collider.super.collidesDoodler(doodler) && doodler.getPosition().y > this.getPosition().y;
+        return Collider.super.collidesDoodler(doodler)
+                && doodler.isFalling()
+                && doodler.getPosition().y >= this.getPosition().y + PLATFORM_HEIGHT / 3;
     }
 
     default void collideDoodle(Doodler doodler) {
