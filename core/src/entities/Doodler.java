@@ -16,6 +16,7 @@ public class Doodler extends DynamicGameObject {
 
     public static final float X_VELOCITY = 20;
     public static final float Y_VELOCITY = 45;
+    private static final float DOODLER_SIZE = 50;
 
     private static final Texture JUMP_TEXTURE = new Texture(Gdx.files.internal("player/right.png"));
     private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
@@ -36,7 +37,7 @@ public class Doodler extends DynamicGameObject {
     }
 
     public static Doodler createDoodler(Platform platform) {
-        return new Doodler(JUMP_TEXTURE, 50, 50, platform, new Vector2(0, Y_VELOCITY));
+        return new Doodler(JUMP_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, new Vector2(0, Y_VELOCITY));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class Doodler extends DynamicGameObject {
             resetTime();
         }
 
-        if (getPosition().x < 0) {
+        if (getPosition().x + DOODLER_SIZE < 0) {
             getPosition().x = WORLD_WIDTH;
         }
 
@@ -81,7 +82,6 @@ public class Doodler extends DynamicGameObject {
         //if doodler hits monster from above
         if (monster.getPosition().y > this.getPosition().y) {
             getVelocity().set(0, Y_VELOCITY);
-            jump();
             resetTime();
             return;
         }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
-import entities.Movable;
 import entities.monster.MonsterFactory;
 import entities.platform.MovingPlatform;
 import entities.platform.Platform;
@@ -26,9 +25,6 @@ public class World {
     public static final Vector2 GRAVITY = new Vector2(0, -6);
     private static final int INITIAL_CAPACITY = 32;
 
-    public static final int WORLD_STATE_RUNNING = 0;
-    public static final int WORLD_STATE_NEXT_LEVEL = 1;
-    public static final int WORLD_STATE_GAME_OVER = 2;
     private static final double MAX_JUMP_HEIGHT = StrictMath.pow(Doodler.Y_VELOCITY, 2) / -(2 * GRAVITY.y);
 
     public final Random random = new Random();
@@ -40,10 +36,6 @@ public class World {
     private final PowerUpFactory powerUpFactory = new PowerUpFactoryImpl();
 
     public Doodler doodler;
-
-    private float heightSoFar = 0;
-    private int score = 0;
-    private int state = WORLD_STATE_RUNNING;
 
     public World() {
         generateScene();
@@ -88,14 +80,25 @@ public class World {
 
             createPowerUp(platform);
 
-//            if (y > WORLD_HEIGHT / 3 && random.nextFloat() > 0.8f) {
-//                var monster = monsterFactory.create(platform);
-//                addCollider(monster);
-//                addMoving(monster);
-//            }
+            if (y > WORLD_HEIGHT / 3 ) {
+                createMonster(platform);
+            }
 
             y += (maxJumpHeight - 0.8f);
             y -= random.nextFloat() * maxJumpHeight / 3;
+        }
+    }
+
+    private Platform createPlatform(float x, float y) {
+        Platform platform = platformFactory.create(x, y);
+        addCollider(platform);
+        return platform;
+    }
+
+    private void createMonster(Platform platform) {
+        if (random.nextFloat() > 0.8f) {
+            var monster = monsterFactory.create(platform);
+            addCollider(monster);
         }
     }
 
@@ -106,12 +109,6 @@ public class World {
         }
     }
 
-    private Platform createPlatform(float x, float y) {
-        Platform platform = platformFactory.create(x, y);
-        addCollider(platform);
-        return platform;
-    }
-
     void createPlatform(float y) {
         float x = getRandomX();
 
@@ -119,12 +116,7 @@ public class World {
 
         createPowerUp(platform);
 
-//        if (random.nextFloat() > 0.8f) {
-//            var monster = monsterFactory.create(platform);
-//            addCollider(monster);
-//            addMoving(monster);
-//        }
-
+        createMonster(platform);
     }
 
     public void refreshScene() {
@@ -142,13 +134,6 @@ public class World {
 
     private float getRandomX() {
         return random.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
-    }
-
-
-    private void checkGameOver() {
-        if (heightSoFar - 7.5f > doodler.getPosition().y) {
-            state = WORLD_STATE_GAME_OVER;
-        }
     }
 
     private void addCollider(Collider obstacle) {
