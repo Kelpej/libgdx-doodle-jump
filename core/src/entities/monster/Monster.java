@@ -5,7 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
 import entities.DynamicGameObject;
+import entities.bullet.Bullet;
 import entities.platform.Platform;
+import main.Sounds;
+
+import static entities.Doodler.Y_VELOCITY;
 
 public class Monster extends DynamicGameObject implements Collider {
 
@@ -15,7 +19,12 @@ public class Monster extends DynamicGameObject implements Collider {
     private boolean isAlive = true;
 
     public Monster(Texture texture, Platform platform) {
-        super(texture, WIDTH, HEIGHT, platform, new Vector2(5, 0));
+        super(texture, WIDTH, HEIGHT, platform, new Vector2(1, 0));
+    }
+
+    public void bounce(Doodler doodler) {
+        doodler.jump();
+        doodler.getVelocity().y = Y_VELOCITY;
     }
 
     public boolean collidesBullet(Bullet bullet) {
@@ -30,5 +39,9 @@ public class Monster extends DynamicGameObject implements Collider {
             Sounds.monsterDeath();
             isAlive = false;
         }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import entities.monster.Monster;
 import entities.platform.Platform;
 import entities.powerup.PowerUp;
+import main.Sounds;
 import main.World;
 
 import static entities.Doodler.State.*;
@@ -59,7 +60,7 @@ public class Doodler extends DynamicGameObject {
         getBounds().x = getPosition().x - getBounds().width / 2;
         getBounds().y = getPosition().y - getBounds().height / 2;
 
-        if (getVelocity().y > 0) {
+        if (getVelocity().y > 0 && !isPoweredUp()) {
             jump();
             resetTime();
         }
@@ -82,10 +83,8 @@ public class Doodler extends DynamicGameObject {
     }
 
     public void collideMonster(Monster monster) {
-        //if doodler hits monster from above
-        if (monster.getPosition().y > this.getPosition().y) {
-            getVelocity().set(0, Y_VELOCITY);
-            resetTime();
+        if (this.isFalling() && this.getPosition().y >= monster.getPosition().y + monster.getBounds().height / 3) {
+            monster.bounce(this);
             return;
         }
 
@@ -98,8 +97,8 @@ public class Doodler extends DynamicGameObject {
     }
 
     public void collidePowerUp(PowerUp powerUp) {
-        powerUp.apply(this);
         powerUp();
+        powerUp.apply(this);
     }
 
     public boolean isAlive() {
@@ -108,6 +107,7 @@ public class Doodler extends DynamicGameObject {
 
     public void setDead() {
         this.isAlive = false;
+        Sounds.dead();
     }
 
     public void setXVelocity(float x) {
@@ -142,5 +142,29 @@ public class Doodler extends DynamicGameObject {
 
     public void powerUp() {
         currentState = POWERED_UP;
+    }
+
+    public void shoot() {
+        Sounds.shot();
+        currentSprite = SHOOTING_SPRITE;
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        currentSprite = JUMP_SPRITE;
+                    }
+                },
+                100
+        );
+    }
+
+    public boolean isOrientedRight() {
+        return orientedRight;
+    }
+
+    public void switchOrientation() {
+        orientedRight = !orientedRight;
+        getSprite().flip(true, false);
+        JUMP_SPRITE.flip(true, false);
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
+import main.Sounds;
 
 import static entities.Doodler.Y_VELOCITY;
 
@@ -26,6 +27,7 @@ public interface Platform extends Collider {
     }
 
     default void bounce(Doodler doodler) {
+        Sounds.bounce();
         doodler.jump();
         doodler.getVelocity().y = Y_VELOCITY;
     }

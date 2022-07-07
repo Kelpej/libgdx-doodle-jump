@@ -1,9 +1,6 @@
 package main;
 
-import entities.platform.DefaultPlatform;
-import entities.platform.MovingPlatform;
-import entities.platform.Platform;
-import entities.platform.PlatformFactory;
+import entities.platform.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ public class PlatformFactoryImpl implements PlatformFactory {
     public PlatformFactoryImpl() {
         platforms.add(DefaultPlatform::new);
         platforms.add(MovingPlatform::new);
+//        platforms.add(BreakingPlatform::new);
     }
 
     @Override

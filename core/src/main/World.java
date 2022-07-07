@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
 import entities.Doodler;
+import entities.bullet.Bullet;
+import entities.monster.Monster;
 import entities.monster.MonsterFactory;
 import entities.platform.MovingPlatform;
 import entities.platform.Platform;
@@ -13,10 +15,9 @@ import entities.platform.PlatformFactory;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static main.GameScreen.WORLD_HEIGHT;
 import static main.GameScreen.WORLD_WIDTH;
@@ -36,6 +37,7 @@ public class World {
     private final PowerUpFactory powerUpFactory = new PowerUpFactoryImpl();
 
     public Doodler doodler;
+    public Optional<Bullet> bullet = Optional.empty();
 
     public World() {
         generateScene();
@@ -51,6 +53,13 @@ public class World {
                 doodler.switchOrientation();
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             doodler.setXVelocity(Doodler.X_VELOCITY);
+            if (!doodler.isOrientedRight())
+                doodler.switchOrientation();
+        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !doodler.isPoweredUp() && doodler.isAlive()) {
+            if (bullet.isEmpty()) {
+                doodler.shoot();
+                bullet = Optional.of(new Bullet(doodler));
+            }
         } else {
             doodler.setXVelocity(0);
         }
@@ -115,9 +124,9 @@ public class World {
 
             createPowerUp(platform);
 
-//            if (y > WORLD_HEIGHT / 3 ) {
-//                createMonster(platform);
-//            }
+            if (y > WORLD_HEIGHT / 3 ) {
+                createMonster(platform);
+            }
 
             y += (maxJumpHeight - 0.8f);
             y -= random.nextFloat() * maxJumpHeight / 3;
@@ -137,7 +146,7 @@ public class World {
 
         createPowerUp(platform);
 
-//        createMonster(platform);
+        createMonster(platform);
     }
 
     private void createMonster(Platform platform) {
