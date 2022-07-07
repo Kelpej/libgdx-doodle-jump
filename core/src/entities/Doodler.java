@@ -2,6 +2,7 @@ package entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.monster.Monster;
@@ -18,8 +19,9 @@ public class Doodler extends DynamicGameObject {
     public static final float Y_VELOCITY = 45;
     private static final float DOODLER_SIZE = 50;
 
-    private static final Texture JUMP_TEXTURE = new Texture(Gdx.files.internal("player/right.png"));
     private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
+    private static final Sprite JUMP_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/right.png")));
+    private static final Sprite SHOOTING_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/shooting.png")));
 
     enum State {
         JUMP,
@@ -28,21 +30,22 @@ public class Doodler extends DynamicGameObject {
     }
 
     private State currentState = FALL;
-    private Texture currentTexture = FALL_TEXTURE;
+    private Sprite currentSprite = getSprite();
 
     private boolean isAlive = true;
+    private boolean orientedRight = true;
 
     private Doodler(Texture texture, float width, float height, Platform platform, Vector2 velocity) {
         super(texture, width, height, platform, velocity);
     }
 
     public static Doodler createDoodler(Platform platform) {
-        return new Doodler(JUMP_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, new Vector2(0, Y_VELOCITY));
+        return new Doodler(FALL_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, new Vector2(0, Y_VELOCITY));
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(currentTexture, getPosition().x, getPosition().y, getBounds().width, getBounds().height);
+        batch.draw(currentSprite, getPosition().x, getPosition().y, getBounds().width, getBounds().height);
     }
 
     @Override
@@ -113,7 +116,9 @@ public class Doodler extends DynamicGameObject {
 
     public void jump() {
         currentState = JUMP;
-        currentTexture = JUMP_TEXTURE;
+        if (currentSprite != SHOOTING_SPRITE) {
+            currentSprite = JUMP_SPRITE;
+        }
     }
 
     public boolean isJumping() {
@@ -122,7 +127,9 @@ public class Doodler extends DynamicGameObject {
 
     public void fall() {
         currentState = State.FALL;
-        currentTexture = FALL_TEXTURE;
+        if (currentSprite != SHOOTING_SPRITE) {
+            currentSprite = getSprite();
+        }
     }
 
     public boolean isFalling() {

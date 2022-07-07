@@ -1,6 +1,7 @@
 package entities.platform;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
@@ -31,9 +32,9 @@ public interface Platform extends Collider {
 
     Vector2 getPosition();
 
-    Texture getTexture();
+    Sprite getSprite();
 
     default void draw(SpriteBatch batch) {
-        batch.draw(getTexture(), getPosition().x, getPosition().y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+        batch.draw(getSprite(), getPosition().x, getPosition().y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
     }
 }

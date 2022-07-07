@@ -42,8 +42,13 @@ public class World {
     }
 
     public void update(SpriteBatch batch, float delta) {
+        /**
+         * Handle input
+         */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             doodler.setXVelocity(-Doodler.X_VELOCITY);
+            if (doodler.isOrientedRight())
+                doodler.switchOrientation();
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             doodler.setXVelocity(Doodler.X_VELOCITY);
         } else {
@@ -52,6 +57,28 @@ public class World {
 
         doodler.update(batch, delta);
 
+        /**
+         * Bullet logic
+         */
+        bullet.ifPresent(bullet -> {
+            bullet.update(batch, delta);
+
+            obstacles.stream()
+                    .filter(collider -> collider instanceof Monster && ((Monster) collider).collidesBullet(bullet))
+                    .findFirst()
+                    .ifPresent(collider -> {
+                        Sounds.monsterDeath();
+                        obstacles.remove(collider);
+                        World.this.bullet = Optional.empty();
+                    });
+            if (bullet.getPosition().y > doodler.getPosition().y + WORLD_HEIGHT) {
+                World.this.bullet = Optional.empty();
+            }
+        });
+
+        /**
+         * Check collisions
+         */
         if (doodler.isAlive() && !doodler.isPoweredUp()) {
             obstacles.stream()
                     .filter(collider -> collider.collidesDoodler(doodler))
@@ -59,7 +86,15 @@ public class World {
                     .ifPresent(collider -> collider.collideDoodle(doodler));
         }
 
-        getObstacles().forEach(collider -> collider.update(batch, delta));
+        /**
+         * Remove dead monster
+         */
+        obstacles.stream()
+                .filter(collider -> collider instanceof Monster && !((Monster) collider).isAlive())
+                .findFirst()
+                .ifPresent(obstacles::remove);
+
+        obstacles.forEach(collider -> collider.update(batch, delta));
     }
 
     private void generateScene() {
