@@ -14,6 +14,7 @@ import entities.platform.Platform;
 import entities.platform.PlatformFactory;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
+import entities.powerup.Propeller;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -38,6 +39,7 @@ public class World {
 
     public Doodler doodler;
     public Optional<Bullet> bullet = Optional.empty();
+    public Optional<Propeller> propeller = Optional.empty();
 
     public World() {
         generateScene();
@@ -65,6 +67,15 @@ public class World {
         }
 
         doodler.update(batch, delta);
+
+//        obstacles.stream()
+//                .filter(collider -> collider instanceof Propeller && collider.collidesDoodler(doodler))
+//                .findFirst()
+//                .ifPresent(collider -> {propeller = Optional.of((Propeller) collider);});
+//
+//        propeller.ifPresent(propeller -> {
+//            propeller.update(batch, delta);
+//        });
 
         /**
          * Bullet logic
