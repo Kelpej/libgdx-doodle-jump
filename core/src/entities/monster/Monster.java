@@ -7,6 +7,7 @@ import entities.Doodler;
 import entities.DynamicGameObject;
 import entities.bullet.Bullet;
 import entities.platform.Platform;
+import main.GameSound;
 import main.Sounds;
 
 import static entities.Doodler.Y_VELOCITY;
@@ -36,7 +37,7 @@ public class Monster extends DynamicGameObject implements Collider {
         doodler.collideMonster(this);
 
         if (doodler.isAlive()) {
-            Sounds.monsterDeath();
+            Sounds.playSound(GameSound.MONSTER_DEAD);
             isAlive = false;
         }
     }

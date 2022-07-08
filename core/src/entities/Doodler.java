@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import entities.monster.Monster;
 import entities.platform.Platform;
 import entities.powerup.PowerUp;
+import main.GameSound;
 import main.Sounds;
 import main.World;
 
@@ -36,12 +37,12 @@ public class Doodler extends DynamicGameObject {
     private boolean isAlive = true;
     private boolean orientedRight = true;
 
-    private Doodler(Texture texture, float width, float height, Platform platform, Vector2 velocity) {
-        super(texture, width, height, platform, velocity);
+    public static Doodler createDoodler(Platform platform) {
+        return new Doodler(platform, new Vector2(0, Y_VELOCITY));
     }
 
-    public static Doodler createDoodler(Platform platform) {
-        return new Doodler(FALL_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, new Vector2(0, Y_VELOCITY));
+    private Doodler(Platform platform, Vector2 velocity) {
+        super(Doodler.FALL_TEXTURE, Doodler.DOODLER_SIZE, Doodler.DOODLER_SIZE, platform, velocity);
     }
 
     @Override
@@ -107,7 +108,7 @@ public class Doodler extends DynamicGameObject {
 
     public void setDead() {
         this.isAlive = false;
-        Sounds.dead();
+        Sounds.playSound(GameSound.DOODLER_DEAD);
     }
 
     public void setXVelocity(float x) {
@@ -119,10 +120,6 @@ public class Doodler extends DynamicGameObject {
         if (currentSprite != SHOOTING_SPRITE) {
             currentSprite = JUMP_SPRITE;
         }
-    }
-
-    public boolean isJumping() {
-        return currentState == JUMP;
     }
 
     public void fall() {
@@ -145,7 +142,8 @@ public class Doodler extends DynamicGameObject {
     }
 
     public void shoot() {
-        Sounds.shot();
+        Sounds.playSound(GameSound.SHOOT);
+
         currentSprite = SHOOTING_SPRITE;
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {

@@ -15,7 +15,7 @@ public interface Collider {
 
     void update(SpriteBatch batch, float delta);
 
-    Rectangle getBounds();
-
     Vector2 getPosition();
+
+    Rectangle getBounds();
 }

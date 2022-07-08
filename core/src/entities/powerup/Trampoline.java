@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import entities.Doodler;
 import entities.GameObject;
 import entities.platform.Platform;
+import main.GameSound;
 import main.Sounds;
 
 public class Trampoline extends GameObject implements PowerUp {
@@ -17,7 +18,7 @@ public class Trampoline extends GameObject implements PowerUp {
 
     @Override
     public void apply(Doodler doodler) {
-        Sounds.trampoline();
+        Sounds.playSound(GameSound.TRAMPOLINE);
         doodler.getVelocity().set(0, 120);
     }
 

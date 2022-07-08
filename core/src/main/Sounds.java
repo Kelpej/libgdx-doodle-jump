@@ -3,41 +3,35 @@ package main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
-public final class Sounds {
+import java.util.EnumMap;
+import java.util.Map;
 
+public final class Sounds {
     private Sounds() {
 
     }
 
-    private static final Sound TRAMPOLINE = Gdx.audio.newSound(Gdx.files.internal("sounds/trampoline.mp3"));
-    private static final Sound DEAD = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.mp3"));
-    private static final Sound PROPELLER = Gdx.audio.newSound(Gdx.files.internal("sounds/propeller.mp3"));
-    private static final Sound BOUNCE = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.mp3"));
-    private static final Sound MONSTER_DEATH = Gdx.audio.newSound(Gdx.files.internal("sounds/monster_death.mp3"));
-
-    private static final Sound SHOT = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.mp3"));
-
-    public static void dead() {
-        DEAD.play();
+    public static void playSound(GameSound sound) {
+        Sound actualSound = gameSounds.get(sound);
+        actualSound.stop();
+        actualSound.play(0.75f);
     }
 
-    public static void trampoline() {
-        TRAMPOLINE.play();
-    }
+    private static final Map<GameSound, Sound> gameSounds = new EnumMap<>(GameSound.class);
 
-    public static void propeller() {
-        PROPELLER.play();
-    }
+    private static final Sound TRAMPOLINE_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/trampoline.mp3"));
+    private static final Sound DOODLER_DEAD_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.mp3"));
+    private static final Sound PROPELLER_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/propeller.mp3"));
+    private static final Sound BOUNCE_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.mp3"));
+    private static final Sound MONSTER_DEATH_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/monster_death.mp3"));
+    private static final Sound SHOT_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.mp3"));
 
-    public static void bounce() {
-        BOUNCE.play();
-    }
-
-    public static void monsterDeath() {
-        MONSTER_DEATH.play();
-    }
-
-    public static void shot() {
-        SHOT.play();
+    static {
+        gameSounds.put(GameSound.PLATFORM_BOUNCE, BOUNCE_SOUND);
+        gameSounds.put(GameSound.SHOOT, SHOT_SOUND);
+        gameSounds.put(GameSound.DOODLER_DEAD, DOODLER_DEAD_SOUND);
+        gameSounds.put(GameSound.MONSTER_DEAD, MONSTER_DEATH_SOUND);
+        gameSounds.put(GameSound.PROPELLER, PROPELLER_SOUND);
+        gameSounds.put(GameSound.TRAMPOLINE, TRAMPOLINE_SOUND);
     }
 }

@@ -77,7 +77,7 @@ public class World {
                     .filter(collider -> collider instanceof Monster && ((Monster) collider).collidesBullet(bullet))
                     .findFirst()
                     .ifPresent(collider -> {
-                        Sounds.monsterDeath();
+                        Sounds.playSound(GameSound.MONSTER_DEAD);
                         obstacles.remove(collider);
                         World.this.optionalBullet = Optional.empty();
                     });

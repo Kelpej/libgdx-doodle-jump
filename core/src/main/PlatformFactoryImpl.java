@@ -1,6 +1,9 @@
 package main;
 
-import entities.platform.*;
+import entities.platform.DefaultPlatform;
+import entities.platform.MovingPlatform;
+import entities.platform.Platform;
+import entities.platform.PlatformFactory;
 
 import java.util.ArrayList;
 import java.util.List;

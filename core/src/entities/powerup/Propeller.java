@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import entities.Doodler;
 import entities.DynamicGameObject;
 import entities.platform.Platform;
+import main.GameSound;
 import main.Sounds;
 import main.World;
 
@@ -46,7 +47,7 @@ public class Propeller extends DynamicGameObject implements PowerUp {
         this.doodler = doodler;
         currentState = State.APPLIED;
 
-        Sounds.propeller();
+        Sounds.playSound(GameSound.PROPELLER);
         World.GRAVITY.set(0, 0);
         doodler.getVelocity().y = Doodler.Y_VELOCITY;
         new java.util.Timer().schedule(
