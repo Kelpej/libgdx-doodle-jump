@@ -25,8 +25,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
 
-        if (world.doodler.getPosition().y > camera.position.y) {
-            camera.position.y = world.doodler.getPosition().y;
+        if (world.doodler().getPosition().y > camera.position.y) {
+            camera.position.y = world.doodler().getPosition().y;
             world.refreshScene();
         }
 

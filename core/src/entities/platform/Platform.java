@@ -15,6 +15,12 @@ public interface Platform extends Collider {
     float PLATFORM_WIDTH = 60;
     float PLATFORM_HEIGHT = 20;
 
+    default void bounce(Doodler doodler) {
+        Sounds.bounce();
+        doodler.jump();
+        doodler.getVelocity().y = Y_VELOCITY;
+    }
+
     @Override
     default boolean collidesDoodler(Doodler doodler) {
         return Collider.super.collidesDoodler(doodler)
@@ -26,17 +32,11 @@ public interface Platform extends Collider {
         doodler.collidePlatform(this);
     }
 
-    default void bounce(Doodler doodler) {
-        Sounds.bounce();
-        doodler.jump();
-        doodler.getVelocity().y = Y_VELOCITY;
+    default void draw(SpriteBatch batch) {
+        batch.draw(getSprite(), getPosition().x, getPosition().y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
     }
 
     Vector2 getPosition();
 
     Sprite getSprite();
-
-    default void draw(SpriteBatch batch) {
-        batch.draw(getSprite(), getPosition().x, getPosition().y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
-    }
 }

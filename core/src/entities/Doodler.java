@@ -60,7 +60,7 @@ public class Doodler extends DynamicGameObject {
         getBounds().x = getPosition().x - getBounds().width / 2;
         getBounds().y = getPosition().y - getBounds().height / 2;
 
-        if (getVelocity().y > 0 && !isPoweredUp()) {
+        if (getVelocity().y > 0 && notPoweredUp()) {
             jump();
             resetTime();
         }
@@ -136,8 +136,8 @@ public class Doodler extends DynamicGameObject {
         return currentState == State.FALL;
     }
 
-    public boolean isPoweredUp() {
-        return currentState == POWERED_UP;
+    public boolean notPoweredUp() {
+        return currentState != POWERED_UP;
     }
 
     public void powerUp() {

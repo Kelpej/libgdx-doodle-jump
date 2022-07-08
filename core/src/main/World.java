@@ -14,11 +14,11 @@ import entities.platform.Platform;
 import entities.platform.PlatformFactory;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
-import entities.powerup.Propeller;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static main.GameScreen.WORLD_HEIGHT;
 import static main.GameScreen.WORLD_WIDTH;
@@ -37,17 +37,16 @@ public class World {
     private final MonsterFactory monsterFactory = new MonsterFactoryImpl();
     private final PowerUpFactory powerUpFactory = new PowerUpFactoryImpl();
 
-    public Doodler doodler;
-    public Optional<Bullet> bullet = Optional.empty();
-    public Optional<Propeller> propeller = Optional.empty();
+    private Doodler doodler;
+    private Optional<Bullet> optionalBullet = Optional.empty();
 
     public World() {
         generateScene();
     }
 
     public void update(SpriteBatch batch, float delta) {
-        /**
-         * Handle input
+        /*
+          Handle input
          */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             doodler.setXVelocity(-Doodler.X_VELOCITY);
@@ -57,10 +56,10 @@ public class World {
             doodler.setXVelocity(Doodler.X_VELOCITY);
             if (!doodler.isOrientedRight())
                 doodler.switchOrientation();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !doodler.isPoweredUp() && doodler.isAlive()) {
-            if (bullet.isEmpty()) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && doodler.notPoweredUp() && doodler.isAlive()) {
+            if (optionalBullet.isEmpty()) {
                 doodler.shoot();
-                bullet = Optional.of(new Bullet(doodler));
+                optionalBullet = Optional.of(new Bullet(doodler));
             }
         } else {
             doodler.setXVelocity(0);
@@ -68,19 +67,10 @@ public class World {
 
         doodler.update(batch, delta);
 
-//        obstacles.stream()
-//                .filter(collider -> collider instanceof Propeller && collider.collidesDoodler(doodler))
-//                .findFirst()
-//                .ifPresent(collider -> {propeller = Optional.of((Propeller) collider);});
-//
-//        propeller.ifPresent(propeller -> {
-//            propeller.update(batch, delta);
-//        });
-
-        /**
-         * Bullet logic
+        /*
+          Bullet logic
          */
-        bullet.ifPresent(bullet -> {
+        optionalBullet.ifPresent(bullet -> {
             bullet.update(batch, delta);
 
             obstacles.stream()
@@ -89,25 +79,25 @@ public class World {
                     .ifPresent(collider -> {
                         Sounds.monsterDeath();
                         obstacles.remove(collider);
-                        World.this.bullet = Optional.empty();
+                        World.this.optionalBullet = Optional.empty();
                     });
             if (bullet.getPosition().y > doodler.getPosition().y + WORLD_HEIGHT) {
-                World.this.bullet = Optional.empty();
+                World.this.optionalBullet = Optional.empty();
             }
         });
 
-        /**
-         * Check collisions
+        /*
+          Check collisions
          */
-        if (doodler.isAlive() && !doodler.isPoweredUp()) {
+        if (doodler.isAlive() && doodler.notPoweredUp()) {
             obstacles.stream()
                     .filter(collider -> collider.collidesDoodler(doodler))
                     .findFirst()
                     .ifPresent(collider -> collider.collideDoodle(doodler));
         }
 
-        /**
-         * Remove dead monster
+        /*
+          Remove dead monster
          */
         obstacles.stream()
                 .filter(collider -> collider instanceof Monster && !((Monster) collider).isAlive())
@@ -135,7 +125,7 @@ public class World {
 
             createPowerUp(platform);
 
-            if (y > WORLD_HEIGHT / 3 ) {
+            if (y > WORLD_HEIGHT / 3) {
                 createMonster(platform);
             }
 
@@ -195,7 +185,7 @@ public class World {
         obstacles.add(obstacle);
     }
 
-    public List<Collider> getObstacles() {
-        return Collections.unmodifiableList(obstacles);
+    public Doodler doodler() {
+        return doodler;
     }
 }

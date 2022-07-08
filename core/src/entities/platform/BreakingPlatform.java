@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Doodler;
 import entities.GameObject;
-import main.World;
 
 public class BreakingPlatform extends GameObject implements Platform {
 

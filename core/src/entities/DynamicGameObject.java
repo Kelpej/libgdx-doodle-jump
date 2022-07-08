@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.platform.Platform;
 import main.GameScreen;
-import main.World;
 
 public abstract class DynamicGameObject extends GameObject implements Movable {
 

@@ -3,34 +3,41 @@ package main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
-public class Sounds {
+public final class Sounds {
+
+    private Sounds() {
+
+    }
+
+    private static final Sound TRAMPOLINE = Gdx.audio.newSound(Gdx.files.internal("sounds/trampoline.mp3"));
+    private static final Sound DEAD = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.mp3"));
+    private static final Sound PROPELLER = Gdx.audio.newSound(Gdx.files.internal("sounds/propeller.mp3"));
+    private static final Sound BOUNCE = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.mp3"));
+    private static final Sound MONSTER_DEATH = Gdx.audio.newSound(Gdx.files.internal("sounds/monster_death.mp3"));
+
+    private static final Sound SHOT = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.mp3"));
+
     public static void dead() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.mp3"));
-        sound.play();
+        DEAD.play();
     }
 
     public static void trampoline() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/trampoline.mp3"));
-        sound.play();
+        TRAMPOLINE.play();
     }
 
     public static void propeller() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/propeller.mp3"));
-        sound.play();
+        PROPELLER.play();
     }
 
     public static void bounce() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.mp3"));
-        sound.play();
+        BOUNCE.play();
     }
 
     public static void monsterDeath() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/monster_death.mp3"));
-        sound.play();
+        MONSTER_DEATH.play();
     }
 
     public static void shot() {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shot.mp3"));
-        sound.play();
+        SHOT.play();
     }
 }
