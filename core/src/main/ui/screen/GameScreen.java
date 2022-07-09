@@ -30,37 +30,43 @@ public class GameScreen implements DoodleJumpScreen {
     private final Camera camera = new OrthographicCamera();
     private final Viewport viewport = new StretchViewport(WIDTH, HEIGHT, camera);
     private final World world = new World();
+    private final List<Button> buttons = new ArrayList<>();
+
+    private final Supplier<Button> pauseSupplier;
+    private final Supplier<Button> resumeSupplier;
+
+    private Button pauseGameButton;
+
     private final DoodleJump game;
     private final SpriteBatch batch;
-    private final List<Button> buttons = new ArrayList<>();
+
     private float cameraToFall;
     private int score;
     private State currentState = PLAY;
 
-    private Button pauseGameButton;
-
     public GameScreen(DoodleJump game) {
         this.game = game;
         this.batch = game.batch();
-    }    private final Supplier<Button> pause = new Supplier<>() {
-        @Override
-        public Button get() {
-            return new Button(new Texture(Gdx.files.internal("buttons/pause.png")), WIDTH - 25, HEIGHT - 25, 25, 25,
-                    game, doodleJump -> pause());
-        }
-    };
+
+        pauseSupplier = () ->
+                new Button(new Texture(Gdx.files.internal("buttons/pause.png")),
+                        WIDTH - 25, HEIGHT - 25,
+                        25, 25,
+                        game, doodleJump -> pause());
+
+        resumeSupplier = () ->
+                new Button(new Texture(Gdx.files.internal("buttons/play.png")),
+                        WIDTH - 25, HEIGHT - 25,
+                        25, 25,
+                        game, doodleJump -> resume());
+    }
 
     private void changeButton(Supplier<Button> supplier) {
         buttons.remove(pauseGameButton);
         pauseGameButton = supplier.get();
         buttons.add(pauseGameButton);
-    }    private final Supplier<Button> resume = new Supplier<>() {
-        @Override
-        public Button get() {
-            return new Button(new Texture(Gdx.files.internal("buttons/play.png")), WIDTH - 25, HEIGHT - 25, 25, 25,
-                    game, doodleJump -> resume());
-        }
-    };
+    }
+
 
     @Override
     public void render(float delta) {
@@ -164,7 +170,7 @@ public class GameScreen implements DoodleJumpScreen {
 
     @Override
     public void show() {
-        pauseGameButton = pause.get();
+        pauseGameButton = pauseSupplier.get();
         buttons.add(pauseGameButton);
         font.setColor(Color.BLACK);
         font.getData().setScale(1.5f);
@@ -178,22 +184,21 @@ public class GameScreen implements DoodleJumpScreen {
 
     @Override
     public void pause() {
-        System.out.println("SET PAUSE");
         currentState = PAUSE;
-        changeButton(resume);
+        changeButton(resumeSupplier);
 
         world.getObstacles().stream()
-                .filter(collider -> collider instanceof DelayedTaskCollider)
+                .filter(DelayedTaskCollider.class::isInstance)
                 .forEach(collider -> ((DelayedTaskCollider) collider).cancelTask());
     }
 
     @Override
     public void resume() {
         currentState = PLAY;
-        changeButton(pause);
+        changeButton(pauseSupplier);
 
         world.getObstacles().stream()
-                .filter(collider -> collider instanceof DelayedTaskCollider)
+                .filter(DelayedTaskCollider.class::isInstance)
                 .forEach(collider -> ((DelayedTaskCollider) collider).scheduleTask());
     }
 

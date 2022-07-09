@@ -63,19 +63,21 @@ public class World {
             if (!doodler.isOrientedRight()) {
                 doodler.switchOrientation();
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && doodler.notPoweredUp() && doodler.isAlive()) {
+        } else {
+            doodler.setXVelocity(0);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && doodler.notPoweredUp() && doodler.isAlive()) {
             if (optionalBullet.isEmpty()) {
                 doodler.shoot();
                 optionalBullet = Optional.of(new Bullet(doodler));
             }
-        } else {
-            doodler.setXVelocity(0);
         }
 
         doodler.update(batch, delta);
 
         /*
-            Bullet logic
+        Bullet logic
          */
         optionalBullet.ifPresent(bullet -> {
             bullet.update(batch, delta);
@@ -94,7 +96,7 @@ public class World {
         });
 
         /*
-            Check collisions
+        Check collisions
          */
         if (doodler.isAlive() && doodler.notPoweredUp()) {
             obstacles.stream()
@@ -104,7 +106,7 @@ public class World {
         }
 
         /*
-            Remove dead monster
+        Remove dead monster
          */
         obstacles.stream()
                 .filter(collider -> collider instanceof Monster && !((Monster) collider).isAlive())
