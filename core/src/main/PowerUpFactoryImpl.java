@@ -17,7 +17,7 @@ public class PowerUpFactoryImpl implements PowerUpFactory {
     private final Random random = new Random();
 
     public PowerUpFactoryImpl() {
-        powerUps.add(Trampoline::new);
+//        powerUps.add(Trampoline::new);
         powerUps.add(Propeller::new);
     }
 

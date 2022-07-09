@@ -17,7 +17,7 @@ public class MovingPlatform extends DynamicGameObject implements Platform {
     private static final Random random = new Random();
 
     public MovingPlatform(float x, float y) {
-        super(TEXTURE, x, y, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT,
+        super(TEXTURE, x, y, Platform.WIDTH, Platform.HEIGHT,
                 random.nextBoolean() ? velocity : negativeVelocity);
     }
 

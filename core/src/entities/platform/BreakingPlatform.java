@@ -16,7 +16,7 @@ public class BreakingPlatform extends GameObject implements Platform {
     private Texture currentTexture = TEXTURE;
 
     public BreakingPlatform(float x, float y) {
-        super(TEXTURE, x, y, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
+        super(TEXTURE, x, y, Platform.WIDTH, Platform.HEIGHT);
     }
 
     @Override

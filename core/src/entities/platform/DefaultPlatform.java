@@ -11,7 +11,7 @@ public class DefaultPlatform extends GameObject implements Platform {
     private static final Texture TEXTURE = new Texture(Gdx.files.internal("environment/platform/default.png"));
 
     public DefaultPlatform(float x, float y) {
-        super(TEXTURE, x, y, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
+        super(TEXTURE, x, y, Platform.WIDTH, Platform.HEIGHT);
     }
 
     @Override

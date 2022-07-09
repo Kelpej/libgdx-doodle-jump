@@ -11,6 +11,7 @@ import entities.powerup.PowerUp;
 import main.GameSound;
 import main.Sounds;
 import main.World;
+import main.ui.screen.DoodleJumpScreen;
 
 import static entities.Doodler.State.*;
 
@@ -18,7 +19,7 @@ public class Doodler extends DynamicGameObject {
 
     public static final float X_VELOCITY = 20;
     public static final float Y_VELOCITY = 45;
-    private static final float DOODLER_SIZE = 50;
+    public static final float DOODLER_SIZE = 50;
 
     private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
     private static final Sprite JUMP_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/right.png")));
@@ -28,7 +29,7 @@ public class Doodler extends DynamicGameObject {
     private boolean isAlive = true;
     private boolean orientedRight = true;
     private Doodler(Platform platform, Vector2 velocity) {
-        super(Doodler.FALL_TEXTURE, Doodler.DOODLER_SIZE, Doodler.DOODLER_SIZE, platform, velocity);
+        super(FALL_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, velocity);
     }
 
     public static Doodler createDoodler(Platform platform) {

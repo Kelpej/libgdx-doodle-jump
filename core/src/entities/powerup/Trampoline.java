@@ -13,7 +13,7 @@ public class Trampoline extends GameObject implements PowerUp {
     private static final Texture TEXTURE = new Texture(Gdx.files.internal("environment/powerup/trampoline.png"));
 
     public Trampoline(Platform platform) {
-        super(TEXTURE, Platform.PLATFORM_WIDTH, TEXTURE.getHeight(), platform);
+        super(TEXTURE, Platform.WIDTH, TEXTURE.getHeight(), platform);
     }
 
     @Override

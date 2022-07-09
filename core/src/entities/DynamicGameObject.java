@@ -31,8 +31,7 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
     public void move(float deltaTime) {
         getPosition().add(getVelocity().x, getVelocity().y);
 
-        getBounds().x = getPosition().x - getBounds().width / 2;
-        getBounds().y = getPosition().y - getBounds().height / 2;
+        getBounds().setPosition(getPosition().x, getPosition().y);
 
         if (getPosition().x < 0) {
 

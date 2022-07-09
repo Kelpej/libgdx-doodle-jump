@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static main.ui.screen.DoodleJumpScreen.HEIGHT;
+import static main.ui.screen.DoodleJumpScreen.WIDTH;
+
 
 public class World {
     public static final Vector2 GRAVITY = new Vector2(0, -6);
@@ -48,16 +51,18 @@ public class World {
 
     public void update(SpriteBatch batch, float delta) {
         /*
-          Handle input
+            Handle input
          */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             doodler.setXVelocity(-Doodler.X_VELOCITY);
-            if (doodler.isOrientedRight())
+            if (doodler.isOrientedRight()) {
                 doodler.switchOrientation();
+            }
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             doodler.setXVelocity(Doodler.X_VELOCITY);
-            if (!doodler.isOrientedRight())
+            if (!doodler.isOrientedRight()) {
                 doodler.switchOrientation();
+            }
         } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && doodler.notPoweredUp() && doodler.isAlive()) {
             if (optionalBullet.isEmpty()) {
                 doodler.shoot();
@@ -70,7 +75,7 @@ public class World {
         doodler.update(batch, delta);
 
         /*
-          Bullet logic
+            Bullet logic
          */
         optionalBullet.ifPresent(bullet -> {
             bullet.update(batch, delta);
@@ -83,13 +88,13 @@ public class World {
                         obstacles.remove(collider);
                         World.this.optionalBullet = Optional.empty();
                     });
-            if (bullet.getPosition().y > doodler.getPosition().y + WORLD_HEIGHT) {
+            if (bullet.getPosition().y > doodler.getPosition().y + HEIGHT) {
                 World.this.optionalBullet = Optional.empty();
             }
         });
 
         /*
-          Check collisions
+            Check collisions
          */
         if (doodler.isAlive() && doodler.notPoweredUp()) {
             obstacles.stream()
@@ -99,7 +104,7 @@ public class World {
         }
 
         /*
-          Remove dead monster
+            Remove dead monster
          */
         obstacles.stream()
                 .filter(collider -> collider instanceof Monster && !((Monster) collider).isAlive())
@@ -110,7 +115,7 @@ public class World {
     }
 
     private void generateScene() {
-        float y = Platform.PLATFORM_HEIGHT / 2;
+        float y = Platform.HEIGHT / 2;
 
         float maxJumpHeight = (float) MAX_JUMP_HEIGHT;
         boolean spawnDoodle = true;
@@ -180,7 +185,7 @@ public class World {
     }
 
     private float getRandomX() {
-        return random.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
+        return random.nextFloat() * (WIDTH - Platform.WIDTH) + Platform.WIDTH / 2;
     }
 
     private void addObstacle(Collider obstacle) {
@@ -189,5 +194,9 @@ public class World {
 
     public Doodler doodler() {
         return doodler;
+    }
+
+    public Optional<Bullet> optionalBullet() {
+        return optionalBullet;
     }
 }

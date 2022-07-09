@@ -12,8 +12,8 @@ import static entities.Doodler.Y_VELOCITY;
 
 public interface Platform extends Collider {
 
-    float PLATFORM_WIDTH = 60;
-    float PLATFORM_HEIGHT = 20;
+    float WIDTH = 60;
+    float HEIGHT = 20;
 
     default void bounce(Doodler doodler) {
         Sounds.playSound(GameSound.PLATFORM_BOUNCE);
@@ -25,7 +25,7 @@ public interface Platform extends Collider {
     default boolean collidesDoodler(Doodler doodler) {
         return Collider.super.collidesDoodler(doodler)
                 && doodler.isFalling()
-                && doodler.getPosition().y >= this.getPosition().y + PLATFORM_HEIGHT / 3;
+                && doodler.getPosition().y >= this.getPosition().y + HEIGHT / 3;
     }
 
     default void collideDoodle(Doodler doodler) {
@@ -33,7 +33,7 @@ public interface Platform extends Collider {
     }
 
     default void draw(SpriteBatch batch) {
-        batch.draw(getSprite(), getPosition().x, getPosition().y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+        batch.draw(getSprite(), getPosition().x, getPosition().y, WIDTH, HEIGHT);
     }
 
     Vector2 getPosition();
