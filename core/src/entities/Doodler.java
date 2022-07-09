@@ -21,15 +21,17 @@ public class Doodler extends DynamicGameObject {
     public static final float Y_VELOCITY = 45;
     public static final float DOODLER_SIZE = 50;
 
-    private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
-    private static final Sprite JUMP_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/right.png")));
-    private static final Sprite SHOOTING_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/shooting.png")));
-    private State currentState = FALL;
+    private final Sprite JUMP_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/right.png")));
+    private final Sprite SHOOTING_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/shooting.png")));
+
     private Sprite currentSprite = getSprite();
+
     private boolean isAlive = true;
     private boolean orientedRight = true;
+    private State currentState = FALL;
+
     private Doodler(Platform platform, Vector2 velocity) {
-        super(FALL_TEXTURE, DOODLER_SIZE, DOODLER_SIZE, platform, velocity);
+        super(new Texture(Gdx.files.internal("player/right_jump.png")), DOODLER_SIZE, DOODLER_SIZE, platform, velocity);
     }
 
     public static Doodler createDoodler(Platform platform) {

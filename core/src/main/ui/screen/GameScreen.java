@@ -86,6 +86,7 @@ public class GameScreen implements DoodleJumpScreen {
             case PLAY -> {
                 world.update(batch, delta);
                 pullUpCamera();
+                batch.end();
 
                 /*
                 Check dead by fall
@@ -110,6 +111,7 @@ public class GameScreen implements DoodleJumpScreen {
                 world.doodler().draw(batch);
                 world.obstacles.forEach(collider -> ((GameObject) collider).draw(batch));
                 world.optionalBullet().ifPresent(bullet -> bullet.draw(batch));
+                batch.end();
             }
 
             case GAME_OVER -> {
@@ -122,12 +124,13 @@ public class GameScreen implements DoodleJumpScreen {
                     world.doodler().getVelocity().set(0, -100);
                 }
 
+                world.obstacles.forEach(collider -> ((GameObject) collider).draw(batch));
+                batch.end();
                 pullDownCamera();
             }
         }
 
         camera.update();
-        batch.end();
     }
 
     private void pullDownCamera() {

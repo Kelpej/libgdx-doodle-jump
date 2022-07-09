@@ -30,7 +30,7 @@ public class World {
 
     private static final double MAX_JUMP_HEIGHT = StrictMath.pow(Doodler.Y_VELOCITY, 2) / -(2 * GRAVITY.y);
 
-    public final Random random = new Random();
+    private static final Random random = new Random();
 
     public final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
 

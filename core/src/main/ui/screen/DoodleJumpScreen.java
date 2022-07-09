@@ -31,7 +31,6 @@ public interface DoodleJumpScreen extends Screen {
 
         handleClick();
 
-
         getBatch().begin();
         getBatch().draw(BACKGROUND, 0, 0);
         getButtons().forEach(button -> button.update(getBatch(), delta));
