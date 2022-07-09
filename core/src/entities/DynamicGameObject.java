@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.platform.Platform;
-import main.GameScreen;
+
+import static main.ui.screen.DoodleJumpScreen.WIDTH;
 
 public abstract class DynamicGameObject extends GameObject implements Movable {
 
@@ -33,15 +34,15 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
         getBounds().x = getPosition().x - getBounds().width / 2;
         getBounds().y = getPosition().y - getBounds().height / 2;
 
-        if (getPosition().x < getBounds().width / 2) {
+        if (getPosition().x < 0) {
 
-            getPosition().x = getBounds().width / 2;
+            getPosition().x = 0;
             velocity.x = -getVelocity().x;
         }
 
-        if (getPosition().x > GameScreen.WORLD_WIDTH - getBounds().width / 2) {
+        if (getPosition().x > WIDTH - getBounds().width) {
 
-            getPosition().x = GameScreen.WORLD_WIDTH - getBounds().width / 2;
+            getPosition().x = WIDTH - getBounds().width;
             velocity.x = -getVelocity().x;
         }
 

@@ -30,18 +30,6 @@ public class Propeller extends DynamicGameObject implements PowerUp {
         USED,
     }
 
-    public Propeller(Platform platform) {
-        super(TEXTURE, TEXTURE.getWidth(), TEXTURE.getHeight(), platform, new Vector2(0, 0));
-
-        TextureRegion[] animationFrames = new TextureRegion[3];
-        TextureRegion[][] sheetTiles = TextureRegion.split(ANIM_TEXTURE, 32, 32);
-        animationFrames[0] = sheetTiles[0][0];
-        animationFrames[1] = sheetTiles[0][1];
-        animationFrames[2] = sheetTiles[0][2];
-
-        animation = new Animation<>(1f / 30f, animationFrames);
-    }
-
     @Override
     public void apply(Doodler doodler) {
         this.doodler = doodler;

@@ -6,6 +6,7 @@ public class DoodleJump extends Game {
 
     @Override
     public void create() {
-        setScreen(new GameScreen());
+        batch = new SpriteBatch();
+        setScreen(new MainScreen(this));
     }
 }

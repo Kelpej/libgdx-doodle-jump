@@ -7,18 +7,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public final class Sounds {
-    private Sounds() {
-
-    }
-
-    public static void playSound(GameSound sound) {
-        Sound actualSound = gameSounds.get(sound);
-        actualSound.stop();
-        actualSound.play(0.75f);
-    }
-
     private static final Map<GameSound, Sound> gameSounds = new EnumMap<>(GameSound.class);
-
     private static final Sound TRAMPOLINE_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/trampoline.mp3"));
     private static final Sound DOODLER_DEAD_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.mp3"));
     private static final Sound PROPELLER_SOUND = Gdx.audio.newSound(Gdx.files.internal("sounds/propeller.mp3"));
@@ -33,5 +22,14 @@ public final class Sounds {
         gameSounds.put(GameSound.MONSTER_DEAD, MONSTER_DEATH_SOUND);
         gameSounds.put(GameSound.PROPELLER, PROPELLER_SOUND);
         gameSounds.put(GameSound.TRAMPOLINE, TRAMPOLINE_SOUND);
+    }
+    private Sounds() {
+
+    }
+
+    public static void playSound(GameSound sound) {
+        Sound actualSound = gameSounds.get(sound);
+        actualSound.stop();
+        actualSound.play(0.0f);
     }
 }

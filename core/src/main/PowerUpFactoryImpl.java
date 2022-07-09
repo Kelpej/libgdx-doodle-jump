@@ -4,7 +4,6 @@ import entities.platform.Platform;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
 import entities.powerup.Propeller;
-import entities.powerup.Trampoline;
 
 import java.util.ArrayList;
 import java.util.List;

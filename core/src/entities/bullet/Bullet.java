@@ -8,8 +8,8 @@ import entities.Doodler;
 import entities.DynamicGameObject;
 
 public class Bullet extends DynamicGameObject {
-    private static final Texture TEXTURE = new Texture(Gdx.files.internal("player/bullet.png"));
     public static final Vector2 velocity = new Vector2(0, 15);
+    private static final Texture TEXTURE = new Texture(Gdx.files.internal("player/bullet.png"));
 
     public Bullet(Doodler doodler) {
         super(TEXTURE, doodler.getPosition().x, doodler.getPosition().y, velocity);

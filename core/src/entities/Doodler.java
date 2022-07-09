@@ -13,7 +13,6 @@ import main.Sounds;
 import main.World;
 
 import static entities.Doodler.State.*;
-import static main.GameScreen.WORLD_WIDTH;
 
 public class Doodler extends DynamicGameObject {
 
@@ -24,25 +23,16 @@ public class Doodler extends DynamicGameObject {
     private static final Texture FALL_TEXTURE = new Texture(Gdx.files.internal("player/right_jump.png"));
     private static final Sprite JUMP_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/right.png")));
     private static final Sprite SHOOTING_SPRITE = new Sprite(new Texture(Gdx.files.internal("player/shooting.png")));
-
-    enum State {
-        JUMP,
-        FALL,
-        POWERED_UP,
-    }
-
     private State currentState = FALL;
     private Sprite currentSprite = getSprite();
-
     private boolean isAlive = true;
     private boolean orientedRight = true;
+    private Doodler(Platform platform, Vector2 velocity) {
+        super(Doodler.FALL_TEXTURE, Doodler.DOODLER_SIZE, Doodler.DOODLER_SIZE, platform, velocity);
+    }
 
     public static Doodler createDoodler(Platform platform) {
         return new Doodler(platform, new Vector2(0, Y_VELOCITY));
-    }
-
-    private Doodler(Platform platform, Vector2 velocity) {
-        super(Doodler.FALL_TEXTURE, Doodler.DOODLER_SIZE, Doodler.DOODLER_SIZE, platform, velocity);
     }
 
     @Override
@@ -51,15 +41,13 @@ public class Doodler extends DynamicGameObject {
     }
 
     @Override
-    public void update(SpriteBatch batch, float deltaTime) {
+    public void move(float deltaTime) {
         deltaTime *= 10;
 
         getVelocity().add(World.GRAVITY.x * deltaTime, World.GRAVITY.y * deltaTime);
 
         getPosition().add(getVelocity().x * deltaTime, getVelocity().y * deltaTime);
-
-        getBounds().x = getPosition().x - getBounds().width / 2;
-        getBounds().y = getPosition().y - getBounds().height / 2;
+        getBounds().setPosition(getPosition().x, getPosition().y);
 
         if (getVelocity().y > 0 && notPoweredUp()) {
             jump();
@@ -72,15 +60,12 @@ public class Doodler extends DynamicGameObject {
         }
 
         if (getPosition().x + DOODLER_SIZE < 0) {
-            getPosition().x = WORLD_WIDTH;
+            getPosition().x = DoodleJumpScreen.WIDTH;
         }
 
-        if (getPosition().x > WORLD_WIDTH) {
+        if (getPosition().x > DoodleJumpScreen.WIDTH) {
             getPosition().x = 0;
         }
-
-        addTime(deltaTime);
-        draw(batch);
     }
 
     public void collideMonster(Monster monster) {
@@ -164,5 +149,11 @@ public class Doodler extends DynamicGameObject {
         orientedRight = !orientedRight;
         getSprite().flip(true, false);
         JUMP_SPRITE.flip(true, false);
+    }
+
+    enum State {
+        JUMP,
+        FALL,
+        POWERED_UP,
     }
 }

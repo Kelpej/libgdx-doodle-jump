@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static main.GameScreen.WORLD_HEIGHT;
-import static main.GameScreen.WORLD_WIDTH;
 
 public class World {
     public static final Vector2 GRAVITY = new Vector2(0, -6);
@@ -42,6 +40,10 @@ public class World {
 
     public World() {
         generateScene();
+    }
+
+    public List<Collider> getObstacles() {
+        return obstacles;
     }
 
     public void update(SpriteBatch batch, float delta) {
@@ -113,7 +115,7 @@ public class World {
         float maxJumpHeight = (float) MAX_JUMP_HEIGHT;
         boolean spawnDoodle = true;
 
-        while (y < WORLD_HEIGHT) {
+        while (y < HEIGHT) {
             float x = getRandomX();
 
             Platform platform = createPlatform(x, y);
@@ -125,7 +127,7 @@ public class World {
 
             createPowerUp(platform);
 
-            if (y > WORLD_HEIGHT / 3) {
+            if (y > HEIGHT / 3) {
                 createMonster(platform);
             }
 
@@ -166,13 +168,13 @@ public class World {
 
     public void refreshScene() {
         for (int i = 0; i < obstacles.size(); i++) {
-            if (obstacles.get(i).getPosition().y < doodler.getPosition().y - WORLD_HEIGHT / 2) {
+            if (obstacles.get(i).getPosition().y < doodler.getPosition().y - HEIGHT / 2) {
                 Collider o = obstacles.get(i);
 
                 obstacles.remove(o);
 
                 if (o instanceof Platform)
-                    createPlatform(o.getPosition().y + WORLD_HEIGHT);
+                    createPlatform(o.getPosition().y + HEIGHT);
             }
         }
     }
