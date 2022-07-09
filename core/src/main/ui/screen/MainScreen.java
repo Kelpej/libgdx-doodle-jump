@@ -18,7 +18,7 @@ public class MainScreen implements DoodleJumpScreen {
 
     public MainScreen(DoodleJump game) {
         this.game = game;
-        this.batch = game.batch();
+        this.batch = new SpriteBatch();
     }
 
     @Override

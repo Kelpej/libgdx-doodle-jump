@@ -123,8 +123,6 @@ public class GameScreen implements DoodleJumpScreen {
                 }
 
                 pullDownCamera();
-                world.obstacles.forEach(collider -> ((GameObject) collider).draw(batch));
-//                game.setScreen(new GameOverScreen(game));
             }
         }
 
@@ -140,6 +138,7 @@ public class GameScreen implements DoodleJumpScreen {
 
         if (world.doodler().getPosition().y < camera.position.y - HEIGHT / 2 - Doodler.DOODLER_SIZE) {
             world.doodler().getVelocity().set(0, 0);
+            game.setScreen(new MainScreen(game));
         }
     }
 
