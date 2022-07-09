@@ -54,7 +54,6 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
         draw(batch);
     }
 
-    @Override
     public Vector2 getVelocity() {
         return velocity;
     }
