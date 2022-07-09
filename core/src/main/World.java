@@ -1,7 +1,5 @@
 package main;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
@@ -20,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static com.badlogic.gdx.Gdx.input;
+import static com.badlogic.gdx.Input.Keys.*;
 import static main.ui.screen.DoodleJumpScreen.HEIGHT;
 import static main.ui.screen.DoodleJumpScreen.WIDTH;
 
@@ -53,12 +53,12 @@ public class World {
         /*
             Handle input
          */
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (input.isKeyPressed(LEFT)) {
             doodler.setXVelocity(-Doodler.X_VELOCITY);
             if (doodler.isOrientedRight()) {
                 doodler.switchOrientation();
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        } else if (input.isKeyPressed(RIGHT)) {
             doodler.setXVelocity(Doodler.X_VELOCITY);
             if (!doodler.isOrientedRight()) {
                 doodler.switchOrientation();
@@ -67,11 +67,9 @@ public class World {
             doodler.setXVelocity(0);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && doodler.notPoweredUp() && doodler.isAlive()) {
-            if (optionalBullet.isEmpty()) {
-                doodler.shoot();
-                optionalBullet = Optional.of(new Bullet(doodler));
-            }
+        if (input.isKeyPressed(SPACE) && doodler.notPoweredUp() && doodler.isAlive() && optionalBullet.isEmpty()) {
+            doodler.shoot();
+            optionalBullet = Optional.of(new Bullet(doodler));
         }
 
         doodler.update(batch, delta);

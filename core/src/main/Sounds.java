@@ -23,6 +23,7 @@ public final class Sounds {
         gameSounds.put(GameSound.PROPELLER, PROPELLER_SOUND);
         gameSounds.put(GameSound.TRAMPOLINE, TRAMPOLINE_SOUND);
     }
+
     private Sounds() {
 
     }

@@ -34,12 +34,9 @@ public class GameScreen implements DoodleJumpScreen {
 
     private final Supplier<Button> pauseSupplier;
     private final Supplier<Button> resumeSupplier;
-
-    private Button pauseGameButton;
-
     private final DoodleJump game;
     private final SpriteBatch batch;
-
+    private Button pauseGameButton;
     private float cameraToFall;
     private int score;
     private State currentState = PLAY;

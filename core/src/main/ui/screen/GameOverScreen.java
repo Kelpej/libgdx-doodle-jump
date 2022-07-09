@@ -1,7 +1,6 @@
 package main.ui.screen;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import main.DoodleJump;
 import main.ui.screen.button.Button;
 
