@@ -4,6 +4,7 @@ import entities.platform.Platform;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
 import entities.powerup.Propeller;
+import entities.powerup.Trampoline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class PowerUpFactoryImpl implements PowerUpFactory {
     private final Random random = new Random();
 
     public PowerUpFactoryImpl() {
-//        powerUps.add(Trampoline::new);
+        powerUps.add(Trampoline::new);
         powerUps.add(Propeller::new);
     }
 

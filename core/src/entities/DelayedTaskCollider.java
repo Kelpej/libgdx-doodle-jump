@@ -6,13 +6,17 @@ import java.util.TimerTask;
 public interface DelayedTaskCollider extends Collider {
 
     default void scheduleTask() {
-        if (getCurrentState() == State.COLLIDED)
+        if (isTriggered())
             getTimer().schedule(getTimerTask(), (long) (getDelay() - getStateTime() * 1000));
     }
 
     default void cancelTask() {
         getTimer().cancel();
         createTimer();
+    }
+
+    default boolean isTriggered() {
+        return getCurrentState() == State.COLLIDED;
     }
 
     void createTimer();

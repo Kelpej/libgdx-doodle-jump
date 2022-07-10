@@ -82,7 +82,6 @@ public class GameScreen implements DoodleJumpScreen {
 
         font.draw(batch, String.valueOf(score), 0, camera.position.y + HEIGHT / 2 - 15);
 
-        world.refreshScene();
 
         switch (currentState) {
 
@@ -133,6 +132,7 @@ public class GameScreen implements DoodleJumpScreen {
             }
         }
 
+        world.refreshScene(camera.position.y);
         camera.update();
     }
 
@@ -185,7 +185,7 @@ public class GameScreen implements DoodleJumpScreen {
         changeButton(resumeSupplier);
 
         world.getObstacles().stream()
-                .filter(DelayedTaskCollider.class::isInstance)
+                .filter(obj -> obj instanceof DelayedTaskCollider && ((DelayedTaskCollider) obj).isTriggered())
                 .forEach(collider -> ((DelayedTaskCollider) collider).cancelTask());
     }
 
@@ -195,7 +195,7 @@ public class GameScreen implements DoodleJumpScreen {
         changeButton(pauseSupplier);
 
         world.getObstacles().stream()
-                .filter(DelayedTaskCollider.class::isInstance)
+                .filter(obj -> obj instanceof DelayedTaskCollider && ((DelayedTaskCollider) obj).isTriggered())
                 .forEach(collider -> ((DelayedTaskCollider) collider).scheduleTask());
     }
 

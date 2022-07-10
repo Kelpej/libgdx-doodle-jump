@@ -90,7 +90,7 @@ public class Propeller extends DynamicGameObject implements PowerUp, DelayedTask
         if (currentState == State.COLLIDED) {
             getPosition().set(doodler.getPosition().x + 10, doodler.getPosition().y + getBounds().height - 5);
         } else if (currentState == State.USED) {
-            getVelocity().set(0, -5);
+            getVelocity().set(fallVelocity);
             getPosition().add(getVelocity().x, getVelocity().y);
         }
     }

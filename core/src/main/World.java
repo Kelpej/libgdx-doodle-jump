@@ -3,10 +3,12 @@ package main;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.Collider;
+import entities.DelayedTaskCollider;
 import entities.Doodler;
 import entities.bullet.Bullet;
 import entities.monster.Monster;
 import entities.monster.MonsterFactory;
+import entities.platform.BreakingPlatform;
 import entities.platform.MovingPlatform;
 import entities.platform.Platform;
 import entities.platform.PlatformFactory;
@@ -141,6 +143,26 @@ public class World {
         }
     }
 
+    public void refreshScene(float cameraPosY) {
+        for (int i = 0; i < obstacles.size(); i++) {
+
+            if (obstacles.get(i).getPosition().y < cameraPosY - HEIGHT / 2) {
+                Collider o = obstacles.get(i);
+
+                obstacles.remove(o);
+
+                if (o instanceof BreakingPlatform &&
+                        ((BreakingPlatform) o).getCurrentState() == DelayedTaskCollider.State.USED) {
+                    createPlatform(((BreakingPlatform) o).spawnPosY() + HEIGHT);
+                    return;
+                }
+
+                if (o instanceof Platform)
+                    createPlatform(cameraPosY + HEIGHT / 2);
+            }
+        }
+    }
+
     private Platform createPlatform(float x, float y) {
         Platform platform = platformFactory.create(x, y);
         addObstacle(platform);
@@ -168,19 +190,6 @@ public class World {
         if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
             PowerUp powerUp = powerUpFactory.create(platform);
             addObstacle(powerUp);
-        }
-    }
-
-    public void refreshScene() {
-        for (int i = 0; i < obstacles.size(); i++) {
-            if (obstacles.get(i).getPosition().y < doodler.getPosition().y - HEIGHT / 2) {
-                Collider o = obstacles.get(i);
-
-                obstacles.remove(o);
-
-                if (o instanceof Platform)
-                    createPlatform(o.getPosition().y + HEIGHT);
-            }
         }
     }
 

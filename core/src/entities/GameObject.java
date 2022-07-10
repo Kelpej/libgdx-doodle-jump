@@ -11,6 +11,8 @@ public abstract class GameObject {
     private final Sprite sprite;
     private final Vector2 position;
     private final Rectangle bounds;
+    private float stateTime = 0;
+
 
     protected GameObject(Texture texture, float x, float y, float width, float height) {
         this.sprite = new Sprite(texture);
@@ -57,5 +59,17 @@ public abstract class GameObject {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public float getStateTime() {
+        return stateTime;
+    }
+
+    protected void addTime(float deltaTime) {
+        stateTime += deltaTime;
+    }
+
+    protected void resetTime() {
+        stateTime = 0;
     }
 }

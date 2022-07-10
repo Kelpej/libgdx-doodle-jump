@@ -10,7 +10,7 @@ import entities.platform.Platform;
 import main.GameSound;
 import main.Sounds;
 
-import static entities.Doodler.Y_VELOCITY;
+import static com.badlogic.gdx.math.MathUtils.random;
 
 public class Monster extends DynamicGameObject implements Collider {
 
@@ -20,12 +20,13 @@ public class Monster extends DynamicGameObject implements Collider {
     private boolean isAlive = true;
 
     public Monster(Texture texture, Platform platform) {
-        super(texture, WIDTH, HEIGHT, platform, new Vector2(1, 0));
+        super(texture, WIDTH, HEIGHT, platform,
+                random.nextBoolean() ? defaultVelocity : negativeVelocity);
     }
 
     public void bounce(Doodler doodler) {
         doodler.jump();
-        doodler.getVelocity().y = Y_VELOCITY;
+        doodler.getVelocity().y = Doodler.Y_VELOCITY;
     }
 
     public boolean collidesBullet(Bullet bullet) {

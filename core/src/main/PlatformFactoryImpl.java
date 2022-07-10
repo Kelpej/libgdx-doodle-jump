@@ -1,31 +1,36 @@
 package main;
 
-import entities.platform.DefaultPlatform;
-import entities.platform.MovingPlatform;
-import entities.platform.Platform;
-import entities.platform.PlatformFactory;
+import entities.platform.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.function.BiFunction;
+
+import static com.badlogic.gdx.math.MathUtils.random;
+import static main.PlatformFactoryImpl.Type.*;
 
 public class PlatformFactoryImpl implements PlatformFactory {
 
-    private final List<BiFunction<Float, Float, Platform>> platforms = new ArrayList<>();
+    enum Type {
+        DEFAULT(DefaultPlatform::new),
+        MOVING(MovingPlatform::new),
+        BREAKING(BreakingPlatform::new);
 
-    private final Random random = new Random();
+        private final BiFunction<Float, Float, Platform> spawner;
 
-    public PlatformFactoryImpl() {
-        platforms.add(DefaultPlatform::new);
-        platforms.add(MovingPlatform::new);
-//        platforms.add(BreakingPlatform::new);
+        Type(BiFunction<Float, Float, Platform> createFunction) {
+            spawner = createFunction;
+        }
     }
 
     @Override
     public Platform create(float x, float y) {
-        int index = random.nextInt(0, platforms.size());
+        BiFunction<Float, Float, Platform> spawner = DEFAULT.spawner;
 
-        return platforms.get(index).apply(x, y);
+        if (random.nextFloat() <= 0.25f) {
+            spawner = MOVING.spawner;
+        } else if (random.nextFloat() <= 0.125f) {
+            spawner = BREAKING.spawner;
+        }
+
+        return spawner.apply(x, y);
     }
 }

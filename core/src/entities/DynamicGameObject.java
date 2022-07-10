@@ -8,9 +8,13 @@ import entities.platform.Platform;
 import static main.ui.screen.DoodleJumpScreen.WIDTH;
 
 public abstract class DynamicGameObject extends GameObject implements Movable {
+    protected static final Vector2 defaultVelocity = new Vector2(1, 0);
+    protected static final Vector2 negativeVelocity = new Vector2(-1, 0);
+
+    protected static final Vector2 zeroVelocity = new Vector2(0, 0);
+    protected static final Vector2 fallVelocity = new Vector2(0, -6);
 
     private final Vector2 velocity;
-    private float stateTime = 0;
 
     protected DynamicGameObject(Texture texture, float x, float y, Vector2 velocity) {
         super(texture, x, y);
@@ -44,8 +48,6 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
             getPosition().x = WIDTH - getBounds().width;
             velocity.x = -getVelocity().x;
         }
-
-        stateTime += deltaTime;
     }
 
     @Override
@@ -56,17 +58,5 @@ public abstract class DynamicGameObject extends GameObject implements Movable {
 
     public Vector2 getVelocity() {
         return velocity;
-    }
-
-    public float getStateTime() {
-        return stateTime;
-    }
-
-    protected void addTime(float deltaTime) {
-        stateTime += deltaTime;
-    }
-
-    protected void resetTime() {
-        stateTime = 0;
     }
 }
