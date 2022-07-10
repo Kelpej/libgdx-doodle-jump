@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public final class Sounds {
     private static final Map<GameSound, Sound> gameSounds = new EnumMap<>(GameSound.class);
@@ -34,5 +35,13 @@ public final class Sounds {
         Sound actualSound = gameSounds.get(sound);
         actualSound.stop();
         actualSound.play();
+    }
+
+    public static void stop() {
+        gameSounds.values().forEach(Sound::pause);
+    }
+
+    public static void resume() {
+        gameSounds.values().forEach(Sound::resume);
     }
 }
