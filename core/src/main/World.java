@@ -14,6 +14,7 @@ import entities.platform.Platform;
 import entities.platform.PlatformFactory;
 import entities.powerup.PowerUp;
 import entities.powerup.PowerUpFactory;
+import main.ui.screen.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,23 @@ import static main.ui.screen.DoodleJumpScreen.WIDTH;
 
 
 public class World {
+
+    public enum Difficulty {
+        EASY(2f, 0, 0.2f),
+        NORMAL(1f, 0.2f, 0.15f),
+        HARD(0f, 0.4f, 0.1f);
+
+        private final float platformGap;
+        private final float monsterSpawn;
+        public final float powerUpSpawn;
+
+        Difficulty(float platformGap, float monsterSpawn, float powerUpSpawn) {
+            this.platformGap = platformGap;
+            this.monsterSpawn = monsterSpawn;
+            this.powerUpSpawn = powerUpSpawn;
+        }
+    }
+
     public static final Vector2 GRAVITY = new Vector2(0, -6);
     private static final int INITIAL_CAPACITY = 32;
 
@@ -34,7 +52,7 @@ public class World {
 
     private static final Random random = new Random();
 
-    public final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
+    private final List<Collider> obstacles = new ArrayList<>(INITIAL_CAPACITY);
 
     private final PlatformFactory platformFactory = new PlatformFactoryImpl();
     private final MonsterFactory monsterFactory = new MonsterFactoryImpl();
@@ -43,7 +61,10 @@ public class World {
     private Doodler doodler;
     private Optional<Bullet> optionalBullet = Optional.empty();
 
-    public World() {
+    private final Difficulty difficulty;
+
+    public World(Difficulty difficulty) {
+        this.difficulty = difficulty;
         generateScene();
     }
 
@@ -138,7 +159,7 @@ public class World {
                 createMonster(platform);
             }
 
-            y += (maxJumpHeight - 0.8f);
+            y += (maxJumpHeight - 0.8f - difficulty.platformGap);
             y -= random.nextFloat() * maxJumpHeight / 3;
         }
     }
@@ -187,7 +208,7 @@ public class World {
     }
 
     private void createPowerUp(Platform platform) {
-        if (!(platform instanceof MovingPlatform) && random.nextFloat() > 0.9f) {
+        if (!(platform instanceof MovingPlatform) && random.nextFloat() < difficulty.powerUpSpawn) {
             PowerUp powerUp = powerUpFactory.create(platform);
             addObstacle(powerUp);
         }

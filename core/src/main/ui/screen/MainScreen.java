@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import main.DoodleJump;
+import main.World;
 import main.ui.screen.button.Button;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class MainScreen implements DoodleJumpScreen {
         var startGame = new Button(startGameTexture,
                 (float) (DoodleJumpScreen.WIDTH/2 - startGameTexture.getWidth()/2.0), (float) (DoodleJumpScreen.HEIGHT/2 - startGameTexture.getHeight()/2.0),
                 startGameTexture.getWidth(), startGameTexture.getHeight(),
-                game, doodleJump -> doodleJump.setScreen(new GameScreen(game)));
+                game, doodleJump -> doodleJump.setScreen(new DifficultyScreen(game)));
         buttons.add(startGame);
     }
 

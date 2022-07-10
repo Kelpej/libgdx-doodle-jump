@@ -85,7 +85,7 @@ public class GameOverScreen implements DoodleJumpScreen {
         var restartGame = new Button(restartGameTexture,
                 (float) (WIDTH/2 - restartGameTexture.getWidth()/2.0), HEIGHT/2 - restartGameTexture.getHeight() -30,
                 restartGameTexture.getWidth(), restartGameTexture.getHeight(),
-                game, doodleJump -> doodleJump.setScreen(new GameScreen(game)));
+                game, doodleJump -> doodleJump.setScreen(new GameScreen(game, gameScreen.currentDifficulty)));
         buttons.add(restartGame);
 
 

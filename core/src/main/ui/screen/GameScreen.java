@@ -31,8 +31,8 @@ public class GameScreen implements DoodleJumpScreen {
     private final BitmapFont font = new BitmapFont();
     private final Camera camera = new OrthographicCamera();
     private final Viewport viewport = new StretchViewport(WIDTH, HEIGHT, camera);
-    private final World world = new World();
     private final List<Button> buttons = new ArrayList<>();
+    private final World world;
 
     private final Supplier<Button> pauseSupplier;
     private final Supplier<Button> resumeSupplier;
@@ -44,9 +44,12 @@ public class GameScreen implements DoodleJumpScreen {
     private State currentState = PLAY;
     public World.Difficulty currentDifficulty;
 
-    public GameScreen(DoodleJump game) {
+    public GameScreen(DoodleJump game, World.Difficulty difficulty) {
         this.game = game;
         this.batch = game.batch();
+
+        currentDifficulty = difficulty;
+        this.world = new World(difficulty);
 
         pauseSupplier = () ->
                 new Button(new Texture(Gdx.files.internal("buttons/pause.png")),
