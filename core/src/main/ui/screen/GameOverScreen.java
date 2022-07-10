@@ -1,6 +1,12 @@
 package main.ui.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import main.DoodleJump;
 import main.ui.screen.button.Button;
 
@@ -10,12 +16,16 @@ import java.util.List;
 
 public class GameOverScreen implements DoodleJumpScreen {
     private final DoodleJump game;
+    private final GameScreen gameScreen;
     private final SpriteBatch batch;
+    private final BitmapFont font = new BitmapFont();
+
 
     private final List<Button> buttons = new ArrayList<>();
 
-    public GameOverScreen(DoodleJump game) {
+    public GameOverScreen(DoodleJump game, GameScreen gameScreen) {
         this.game = game;
+        this.gameScreen = gameScreen;
         this.batch = new SpriteBatch();
     }
 
@@ -29,10 +39,51 @@ public class GameOverScreen implements DoodleJumpScreen {
         return buttons;
     }
 
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0, 1);
+
+        handleClick();
+
+        getBatch().begin();
+        getBatch().draw(BACKGROUND, 0, 0);
+        getButtons().forEach(button -> button.update(getBatch(), delta));
+
+        Texture gameOverTexture = new Texture(Gdx.files.internal("environment/gameover.png"));
+        batch.draw(gameOverTexture,
+                (float) (WIDTH/2 - gameOverTexture.getWidth()/6.0), (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 100),
+                (float) (gameOverTexture.getWidth()/3.0), (float) (gameOverTexture.getHeight()/3.0));
+
+
+
+        GlyphLayout layout = new GlyphLayout(font, "Your score is: " + gameScreen.getScore());
+        float fontX = (WIDTH - layout.width) / 2;
+        float fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 120);
+        font.draw(batch, layout, fontX, fontY);
+
+        layout = new GlyphLayout(font, "Highest score: " + DoodleJump.highestScore);
+        fontX = (WIDTH - layout.width) / 2;
+        fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 150);
+        font.draw(batch, layout, fontX, fontY);
+
+
+
+
+        getBatch().end();
+    }
+
 
     @Override
     public void show() {
-        System.out.println("GAME OVER SCREEN");
+        var restartGameTexture = new Texture(Gdx.files.internal("buttons/restart_game2.png"));
+        var restartGame = new Button(restartGameTexture,
+                (float) (WIDTH/2 - restartGameTexture.getWidth()/2.0), HEIGHT/2 - restartGameTexture.getHeight(),
+                restartGameTexture.getWidth(), restartGameTexture.getHeight(),
+                game, doodleJump -> doodleJump.setScreen(new GameScreen(game)));
+        buttons.add(restartGame);
+
+        font.setColor(Color.BLACK);
+        font.getData().setScale(1.5f);
     }
 
     @Override

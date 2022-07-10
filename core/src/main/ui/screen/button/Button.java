@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import entities.GameObject;
 import main.DoodleJump;
+import main.GameSound;
+import main.Sounds;
 
 import java.util.function.Consumer;
 
@@ -30,6 +32,7 @@ public class Button extends GameObject {
     }
 
     public void handleClick() {
+        Sounds.playSound(GameSound.CLICK);
         screenChanger.accept(game);
     }
 

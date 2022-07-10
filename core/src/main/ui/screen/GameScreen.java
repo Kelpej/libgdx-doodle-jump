@@ -14,6 +14,7 @@ import entities.DelayedTaskCollider;
 import entities.Doodler;
 import entities.GameObject;
 import main.DoodleJump;
+import main.Sounds;
 import main.World;
 import main.ui.screen.button.Button;
 
@@ -144,7 +145,8 @@ public class GameScreen implements DoodleJumpScreen {
 
         if (world.doodler().getPosition().y < camera.position.y - HEIGHT / 2 - Doodler.DOODLER_SIZE) {
             world.doodler().getVelocity().set(0, 0);
-            game.setScreen(new MainScreen(game));
+            DoodleJump.highestScore = Math.max(DoodleJump.highestScore, score);
+            game.setScreen(new GameOverScreen(game, this));
         }
     }
 
@@ -183,6 +185,7 @@ public class GameScreen implements DoodleJumpScreen {
     public void pause() {
         currentState = PAUSE;
         changeButton(resumeSupplier);
+        Sounds.stop();
 
         world.getObstacles().stream()
                 .filter(obj -> obj instanceof DelayedTaskCollider && ((DelayedTaskCollider) obj).isTriggered())
@@ -193,6 +196,7 @@ public class GameScreen implements DoodleJumpScreen {
     public void resume() {
         currentState = PLAY;
         changeButton(pauseSupplier);
+        Sounds.resume();
 
         world.getObstacles().stream()
                 .filter(obj -> obj instanceof DelayedTaskCollider && ((DelayedTaskCollider) obj).isTriggered())
@@ -207,6 +211,10 @@ public class GameScreen implements DoodleJumpScreen {
     @Override
     public void dispose() {
 
+    }
+
+    public int getScore() {
+        return score;
     }
 
     enum State {

@@ -63,7 +63,7 @@ public class Propeller extends DynamicGameObject implements PowerUp, DelayedTask
 
     @Override
     public long getDelay() {
-        return 5000;
+        return 7000;
     }
 
     @Override

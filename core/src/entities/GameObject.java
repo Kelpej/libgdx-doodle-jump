@@ -33,8 +33,8 @@ public abstract class GameObject {
     protected GameObject(Texture texture, float width, float height, Platform platform) {
         this.sprite = new Sprite(texture);
 
-        float x = platform.getPosition().x;
-        float y = platform.getPosition().y;
+        float x = platform.getPosition().x + platform.getBounds().width/2 - width/2;
+        float y = platform.getPosition().y + platform.getBounds().height - 5;
 
         this.position = new Vector2(x, y);
 

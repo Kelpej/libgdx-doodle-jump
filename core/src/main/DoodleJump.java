@@ -6,6 +6,7 @@ import main.ui.screen.MainScreen;
 
 public class DoodleJump extends Game {
     private SpriteBatch batch;
+    public static int highestScore;
 
     @Override
     public void create() {

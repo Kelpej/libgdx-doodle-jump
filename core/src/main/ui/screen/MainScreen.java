@@ -23,9 +23,10 @@ public class MainScreen implements DoodleJumpScreen {
 
     @Override
     public void show() {
-        var startGame = new Button(new Texture(Gdx.files.internal("environment/kavunyaka.png")),
-                0, 0,
-                50, 50,
+        var startGameTexture = new Texture(Gdx.files.internal("buttons/start_game2.png"));
+        var startGame = new Button(startGameTexture,
+                (float) (DoodleJumpScreen.WIDTH/2 - startGameTexture.getWidth()/2.0), (float) (DoodleJumpScreen.HEIGHT/2 - startGameTexture.getHeight()/2.0),
+                startGameTexture.getWidth(), startGameTexture.getHeight(),
                 game, doodleJump -> doodleJump.setScreen(new GameScreen(game)));
         buttons.add(startGame);
     }

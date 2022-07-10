@@ -7,5 +7,5 @@ public enum GameSound {
     MONSTER_DEAD,
     PROPELLER,
     TRAMPOLINE,
-
+    CLICK,
 }
