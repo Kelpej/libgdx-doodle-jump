@@ -27,6 +27,7 @@ import static main.ui.screen.GameScreen.State.*;
 
 public class GameScreen implements DoodleJumpScreen {
 
+    private static final int SCORE_TO_WIN = 860;
     private final BitmapFont font = new BitmapFont();
     private final Camera camera = new OrthographicCamera();
     private final Viewport viewport = new StretchViewport(WIDTH, HEIGHT, camera);
@@ -41,6 +42,7 @@ public class GameScreen implements DoodleJumpScreen {
     private float cameraToFall;
     private int score;
     private State currentState = PLAY;
+    public World.Difficulty currentDifficulty;
 
     public GameScreen(DoodleJump game) {
         this.game = game;
@@ -112,7 +114,7 @@ public class GameScreen implements DoodleJumpScreen {
                 Draw objects when paused
                 */
                 world.doodler().draw(batch);
-                world.obstacles.forEach(collider -> ((GameObject) collider).draw(batch));
+                world.getObstacles().forEach(collider -> ((GameObject) collider).draw(batch));
                 world.optionalBullet().ifPresent(bullet -> bullet.draw(batch));
                 batch.end();
             }
@@ -127,7 +129,7 @@ public class GameScreen implements DoodleJumpScreen {
                     world.doodler().getVelocity().set(0, -100);
                 }
 
-                world.obstacles.forEach(collider -> ((GameObject) collider).draw(batch));
+                world.getObstacles().forEach(collider -> ((GameObject) collider).draw(batch));
                 batch.end();
                 pullDownCamera();
             }
@@ -145,6 +147,7 @@ public class GameScreen implements DoodleJumpScreen {
 
         if (world.doodler().getPosition().y < camera.position.y - HEIGHT / 2 - Doodler.DOODLER_SIZE) {
             world.doodler().getVelocity().set(0, 0);
+            Sounds.stop();
             DoodleJump.highestScore = Math.max(DoodleJump.highestScore, score);
             game.setScreen(new GameOverScreen(game, this));
         }
@@ -153,7 +156,12 @@ public class GameScreen implements DoodleJumpScreen {
     private void pullUpCamera() {
         if (world.doodler().getPosition().y > camera.position.y) {
             camera.position.y = world.doodler().getPosition().y;
-            score = (int) world.doodler().getPosition().y / 10;
+            score = (int) world.doodler().getPosition().y / 15;
+
+            if (score > SCORE_TO_WIN) {
+                Sounds.stop();
+                game.setScreen(new WinScreen(game));
+            }
         }
     }
 

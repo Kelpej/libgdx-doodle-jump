@@ -180,7 +180,7 @@ public class World {
     }
 
     private void createMonster(Platform platform) {
-        if (random.nextFloat() > 0.8f) {
+        if (doodler.notPoweredUp() && random.nextFloat() < difficulty.monsterSpawn) {
             var monster = monsterFactory.create(platform);
             addObstacle(monster);
         }

@@ -34,7 +34,7 @@ public final class Sounds {
     public static void playSound(GameSound sound) {
         Sound actualSound = gameSounds.get(sound);
         actualSound.stop();
-        actualSound.play();
+        actualSound.play(0.2f);
     }
 
     public static void stop() {

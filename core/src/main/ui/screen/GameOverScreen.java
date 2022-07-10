@@ -51,22 +51,25 @@ public class GameOverScreen implements DoodleJumpScreen {
 
         Texture gameOverTexture = new Texture(Gdx.files.internal("environment/gameover.png"));
         batch.draw(gameOverTexture,
-                (float) (WIDTH/2 - gameOverTexture.getWidth()/6.0), (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 100),
+                (float) (WIDTH/2 - gameOverTexture.getWidth()/6.0), (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 50),
                 (float) (gameOverTexture.getWidth()/3.0), (float) (gameOverTexture.getHeight()/3.0));
 
 
 
         GlyphLayout layout = new GlyphLayout(font, "Your score is: " + gameScreen.getScore());
         float fontX = (WIDTH - layout.width) / 2;
-        float fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 120);
+        float fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 70);
         font.draw(batch, layout, fontX, fontY);
 
         layout = new GlyphLayout(font, "Highest score: " + DoodleJump.highestScore);
         fontX = (WIDTH - layout.width) / 2;
-        fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 150);
+        fontY = (float) (HEIGHT-gameOverTexture.getHeight()/3.0 - 100);
         font.draw(batch, layout, fontX, fontY);
 
-
+        Texture injuredTexture = new Texture(Gdx.files.internal("player/injured.png"));
+        batch.draw(injuredTexture,
+                (float) (WIDTH/2 - injuredTexture.getWidth()/18.0 + 10), (float) (HEIGHT-injuredTexture.getHeight()/6.0 - 150),
+                (float) (injuredTexture.getWidth()/9.0), (float) (injuredTexture.getHeight()/9.0));
 
 
         getBatch().end();
@@ -75,15 +78,25 @@ public class GameOverScreen implements DoodleJumpScreen {
 
     @Override
     public void show() {
+        font.setColor(Color.BLACK);
+        font.getData().setScale(1.5f);
+
         var restartGameTexture = new Texture(Gdx.files.internal("buttons/restart_game2.png"));
         var restartGame = new Button(restartGameTexture,
-                (float) (WIDTH/2 - restartGameTexture.getWidth()/2.0), HEIGHT/2 - restartGameTexture.getHeight(),
+                (float) (WIDTH/2 - restartGameTexture.getWidth()/2.0), HEIGHT/2 - restartGameTexture.getHeight() -30,
                 restartGameTexture.getWidth(), restartGameTexture.getHeight(),
                 game, doodleJump -> doodleJump.setScreen(new GameScreen(game)));
         buttons.add(restartGame);
 
-        font.setColor(Color.BLACK);
-        font.getData().setScale(1.5f);
+
+        var mainMenuTexture = new Texture(Gdx.files.internal("buttons/home.png"));
+        var mainMenu = new Button(mainMenuTexture,
+                (float) (WIDTH/2 - mainMenuTexture.getWidth()/2.0), HEIGHT/2 - mainMenuTexture.getHeight() - 150,
+                mainMenuTexture.getWidth(), mainMenuTexture.getHeight(),
+                game, doodleJump -> doodleJump.setScreen(new MainScreen(game)));
+        buttons.add(mainMenu);
+
+
     }
 
     @Override
